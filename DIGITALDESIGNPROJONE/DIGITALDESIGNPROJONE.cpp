@@ -12,7 +12,7 @@ void SVectorPrint(vector<string>V) //prints a 1d string vector
     }
     //cout << "Print" << endl;
 }
-void CSetPrint(set<char>S)
+void CSetPrint(set<char>S) //orints a 1 d char set
 {
     set<char>::iterator IT;
     for (IT=S.begin();IT!=S.end();IT++)
@@ -20,7 +20,7 @@ void CSetPrint(set<char>S)
         cout << *IT << endl;
     }
 }
-bool PoSValidation(vector<string> maxterms)
+bool PoSValidation(vector<string> maxterms) //checks if the number of variables in a PoS in less than 11(+2 " ","+")
 {
     set<char> varss;
     for (int i = 0; i < maxterms.size(); i++)
@@ -40,7 +40,7 @@ bool PoSValidation(vector<string> maxterms)
         return false;
     }
 }
-void PoSCleanUp(string PoS)
+void PoSCleanUp(string PoS) //Removes the brackets from the PoS string and puts the terms in a vector
 {
     vector<string> maxterms;
     for (int i = 0; i < PoS.length()-1;)
@@ -67,7 +67,7 @@ void PoSCleanUp(string PoS)
     }
     //PoSValidation(maxterms);
 }
-void SoPCleanUp(string SoP) //takes the SoP string and isolates the minterms
+void SoPCleanUp(string SoP) //takes the SoP string and removes the " + " and stores minterms in a vector
 {
     vector<string> minterms;
     for (int i=0;i<SoP.length();)
@@ -105,7 +105,7 @@ bool SoPValidation1(string SoP) //checks if SoP has a PoS
         return true;
     }
 }
-bool SoPValidation2(vector<string> minterms) //validates number of variables
+bool SoPValidation2(vector<string> minterms) //validates number of variables is less than 11
 {
     set<char> var;
     for (int i = 0; i < minterms.size(); i++)
@@ -126,14 +126,27 @@ bool SoPValidation2(vector<string> minterms) //validates number of variables
 }
 int main()
 {
-    //flow: SoPVal1 --> SoPCleanUp --> SoPVal2
-    //PoSCleanUp --> PoSValidation
-    //string SopT = "abc + bcd + ace";
-    //SoPCleanUp(SopT);
-    //TODO validate that variables are letters (check from sets in SoPValidation2 and PoSValidation). POS not missing brackets. 
-    //Process strings to create truth table and print PoS and SoP. DeMorgan's needed. KMAP up to 4. Print all PIs, show minterms, and binary. 
-    //Get EPIs from PIs as booleans. Print minterms not covered by EPIs. Minimize using tabulation. 10 test cases. Report. 
-    //Current validation: -No PoS in SoP -Number of variables not more than 10
+    //flow: 
+    //SoP: SoPVal1 --> SoPCleanUp --> SoPVal2 ?
+    //PoS: PoSCleanUp --> PoSValidation ?
+    //TODO 
+    //validate that variables are letters (check from sets in SoPValidation2 and PoSValidation). 
+    //POS not missing brackets. 
+    //Process strings to create truth table and print PoS and SoP
+    //KMAP up to 4. 
+    //Print all PIs, show minterms, and binary. 
+    //Get EPIs from PIs as booleans. 
+    //Print minterms not covered by EPIs. 
+    //Minimize using tabulation. 
+    //10 test cases. 
+    //Project Report. 
+    //Use Github
+    //Current validation: 
+    //-No PoS in SoP 
+    //-Number of variables not more than 10
+    //TESTING:
     string PoST = "(a + b)(b + c)(c + d)";
     PoSCleanUp(PoST);
+    //string SopT = "abc + bcd + ace";
+   //SoPCleanUp(SopT);
 }
