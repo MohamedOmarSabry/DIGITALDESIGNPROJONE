@@ -12,6 +12,61 @@ void SVectorPrint(vector<string>V) //prints a 1d string vector
     }
     //cout << "Print" << endl;
 }
+void CSetPrint(set<char>S)
+{
+    set<char>::iterator IT;
+    for (IT=S.begin();IT!=S.end();IT++)
+    {
+        cout << *IT << endl;
+    }
+}
+bool PoSValidation(vector<string> maxterms)
+{
+    set<char> varss;
+    for (int i = 0; i < maxterms.size(); i++)
+    {
+        for (int j = 0; j < maxterms[i].size(); j++)
+        {
+            varss.emplace(maxterms[i][j]);
+        }
+    }
+    //CSetPrint(varss);
+    if (varss.size() < 13)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+void PoSCleanUp(string PoS)
+{
+    vector<string> maxterms;
+    for (int i = 0; i < PoS.length()-1;)
+    {
+        if (PoS.find("(") == PoS.npos)
+        {
+            // i = SoP.length();
+             //cout << "No more" << endl;
+            //maxterms.push_back(PoS);
+            //PoS = PoS.substr(i);
+            //cout << SoP << endl;
+            SVectorPrint(maxterms);
+            i = PoS.length() - 1;
+        }
+        else
+        {
+            maxterms.push_back(PoS.substr(i+1, PoS.find(")")-1));
+            //cout << SoP.substr(i, SoP.find(" + "))<<"DONE" << endl;
+            PoS = PoS.substr(PoS.find(")") + 1);
+            //cout << SoP << "after substr" << endl;
+            //SoP.erase(0,SoP.find_first_not_of(" + "));
+            //cout << SoP << "after erase" << endl;
+        }
+    }
+    //PoSValidation(maxterms);
+}
 void SoPCleanUp(string SoP) //takes the SoP string and isolates the minterms
 {
     vector<string> minterms;
@@ -25,7 +80,7 @@ void SoPCleanUp(string SoP) //takes the SoP string and isolates the minterms
             SoP = SoP.substr(i);
             //cout << SoP << endl;
             SVectorPrint(minterms);
-            return;
+            i = SoP.length();
         }
         else
         {
@@ -41,7 +96,7 @@ void SoPCleanUp(string SoP) //takes the SoP string and isolates the minterms
 }
 bool SoPValidation1(string SoP) //checks if SoP has a PoS
 {
-    if (SoP.find("*") != SoP.npos)
+    if (SoP.find("(") != SoP.npos)
     {
         return false;
     }
@@ -72,6 +127,9 @@ bool SoPValidation2(vector<string> minterms) //validates number of variables
 int main()
 {
     //flow: SoPVal1 --> SoPCleanUp --> SoPVal2
-    string SopT = "abc + bcd + ace";
-    SoPCleanUp(SopT);
+    //PoSCleanUp --> PoSValidation
+    //string SopT = "abc + bcd + ace";
+    //SoPCleanUp(SopT);
+    string PoST = "(a + b)(b + c)(c + d)";
+    PoSCleanUp(PoST);
 }
