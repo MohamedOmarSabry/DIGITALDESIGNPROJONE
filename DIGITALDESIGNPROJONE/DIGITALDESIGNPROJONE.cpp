@@ -1,8 +1,10 @@
 #include <iostream>
 #include <vector>
+#include <map>
+#include <set>
 #include <iterator>
 using namespace std;
-void SVectorPrint(vector<string>V)
+void SVectorPrint(vector<string>V) //prints a 1d string vector
 {
     for (int i = 0; i < V.size(); i++)
     {
@@ -10,7 +12,7 @@ void SVectorPrint(vector<string>V)
     }
     //cout << "Print" << endl;
 }
-void SoPCleanUp(string SoP)
+void SoPCleanUp(string SoP) //takes the SoP string and isolates the minterms
 {
     vector<string> minterms;
     for (int i=0;i<SoP.length();)
@@ -37,17 +39,39 @@ void SoPCleanUp(string SoP)
     }
    
 }
-bool SoPValidation(string SoP)
+bool SoPValidation1(string SoP) //checks if SoP has a PoS
 {
-    if (SoP.find(" * ") != SoP.npos)
+    if (SoP.find("*") != SoP.npos)
     {
         return false;
     }
-    
+    else
+    {
+        return true;
+    }
 }
-
+bool SoPValidation2(vector<string> minterms) //validates number of variables
+{
+    set<char> var;
+    for (int i = 0; i < minterms.size(); i++)
+    {
+        for (int j = 0; j < minterms[i].size(); j++)
+        {
+            var.emplace(minterms[i][j]);
+        }
+    }
+    if (var.size() < 11)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 int main()
 {
+    //flow: SoPVal1 --> SoPCleanUp --> SoPVal2
     string SopT = "abc + bcd + ace";
     SoPCleanUp(SopT);
 }
