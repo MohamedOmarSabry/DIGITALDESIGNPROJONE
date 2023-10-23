@@ -130,6 +130,10 @@ int main()
     //PoSCleanUp --> PoSValidation
     //string SopT = "abc + bcd + ace";
     //SoPCleanUp(SopT);
+    //TODO validate that variables are letters (check from sets in SoPValidation2 and PoSValidation). POS not missing brackets. 
+    //Process strings to create truth table and print PoS and SoP. DeMorgan's needed. KMAP up to 4. Print all PIs, show minterms, and binary. 
+    //Get EPIs from PIs as booleans. Print minterms not covered by EPIs. Minimize using tabulation. 10 test cases. Report. 
+    //Current validation: -No PoS in SoP -Number of variables not more than 10
     string PoST = "(a + b)(b + c)(c + d)";
     PoSCleanUp(PoST);
 }
