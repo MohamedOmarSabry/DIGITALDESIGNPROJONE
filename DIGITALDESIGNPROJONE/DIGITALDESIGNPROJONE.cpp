@@ -43,10 +43,7 @@ bool SoPValidation(string SoP)
     {
         return false;
     }
-    else if ()
-    {
-
-    }
+    
 }
 
 int main()
