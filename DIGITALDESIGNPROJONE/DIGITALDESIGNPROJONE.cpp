@@ -145,6 +145,7 @@ int main()
     //-No PoS in SoP 
     //-Number of variables not more than 10
     //TESTING:
+    //test
     string PoST = "(a + b)(b + c)(c + d)";
     PoSCleanUp(PoST);
     //string SopT = "abc + bcd + ace";
