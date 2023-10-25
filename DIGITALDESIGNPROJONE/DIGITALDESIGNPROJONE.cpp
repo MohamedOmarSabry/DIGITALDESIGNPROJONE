@@ -29,11 +29,23 @@ bool PoSValidation(vector<string>& maxterms) //checks if the number of variables
     {
         for (int j = 0; j < maxterms[i].size(); j++)
         {
-            varss.emplace(maxterms[i][j]);
+            if (maxterms[i][j] == '\'')
+            {
+
+            }
+            else if (maxterms[i][j] == '+')
+            {
+
+            }
+            else
+            {
+                varss.emplace(maxterms[i][j]);
+            }
+
         }
     }
     //CSetPrint(varss);
-    if (varss.size() < 13)
+    if (varss.size() < 11)
     {
         return true;
     }
