@@ -5,6 +5,7 @@
 #include <iterator>
 #include <algorithm>
 #include <string>
+#include <cmath>
 using namespace std;
 void SVectorPrint(vector<string>V) //prints a 1d string vector
 {
@@ -150,6 +151,48 @@ void SoPtoBinaryString(vector<string>& minterms, vector<string>&Bminterms, set<c
         BinaryT.clear();
     }
 }
+void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableForVariables
+{
+    vector<vector<bool>>TTable(pow(2,var.size()),vector<bool>(var.size(),0));
+    set<char>::iterator IT;
+    IT = var.begin();
+    for (int i = 0; i < var.size(); i++)
+    {
+        cout << "i: " << i << endl;
+        int count = 0;
+        for (int j = 0; j < pow(2, i); j++)
+        {
+            //cout << "Row: " << j << " ";
+            cout << "j: " << j << endl;
+            for (int k = 0; k < pow(2, var.size() - i-1); k++)
+            {
+                count++;
+            }
+            cout << "count: " << count<< endl;
+            for (int k = count; k < count+pow(2,var.size()-i-1); k++)
+            {
+                cout << "k: " << k << " i: " << i << endl;
+                TTable[k][i]=1;
+            }
+            count = count + pow(2, var.size() - i - 1);
+        }
+        //IT++;
+    }
+    for (IT; IT != var.end(); IT++)
+    {
+        cout << *IT << " ";
+    }
+    cout << endl;
+    for (int i = 0; i < TTable.size(); i++)
+    {
+        //cout << *IT << "\t";
+        for (int j = 0; j < TTable[i].size(); j++)
+        {
+            cout << TTable[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
 void SoPCleanUp(string SoP) //takes the SoP string and removes the " + " and stores minterms in a vector
 {
     vector<string> minterms;
@@ -180,6 +223,7 @@ void SoPCleanUp(string SoP) //takes the SoP string and removes the " + " and sto
     CSetPrint(var);
     vector<string>Bminterms;
     SoPtoBinaryString(minterms, Bminterms, var);
+    TTableBuild(var, Bminterms);
 }
 bool SoPValidation1(string SoP) //checks if SoP has a PoS
 {
@@ -192,6 +236,7 @@ bool SoPValidation1(string SoP) //checks if SoP has a PoS
         return true;
     }
 }
+
 int main()
 {
     //flow: 
