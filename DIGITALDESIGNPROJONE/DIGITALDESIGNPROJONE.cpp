@@ -151,9 +151,28 @@ void SoPtoBinaryString(vector<string>& minterms, vector<string>&Bminterms, set<c
         BinaryT.clear();
     }
 }
-void PrintMinMaxterms(vector<vector<bool>>& TTable)
+void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var)
 {
+    set<char>::iterator IT;
+    
 
+    for (int i = 0; i < TTable.size(); i++)
+    {
+        if (TTable[i][TTable[i].size() - 1] == 1)
+        {
+            for (IT = var.begin(); IT != var.end(); IT++)
+            {
+                for (int j = 0; j < TTable[i].size(); j++)
+                {
+
+                }
+            }
+        }
+        else
+        {
+
+        }
+    }
 }
 void FTTColFill(vector<vector<bool>>&TTable, vector<string>& Bminterms)
 {
