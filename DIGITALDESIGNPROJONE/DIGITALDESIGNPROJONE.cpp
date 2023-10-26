@@ -151,9 +151,59 @@ void SoPtoBinaryString(vector<string>& minterms, vector<string>&Bminterms, set<c
         BinaryT.clear();
     }
 }
+void PrintMinMaxterms(vector<vector<bool>>& TTable)
+{
+
+}
 void FTTColFill(vector<vector<bool>>&TTable, vector<string>& Bminterms)
 {
-  
+    //cout << "FFTCOLFILL";
+    for (int i = 0; i < Bminterms.size(); i++)
+    {
+        for (int j = 0; j < TTable.size(); j++)
+        {
+            int countBM = 0;
+            for (int k = 0; k < TTable[j].size()-1; k++)
+            {
+                //cout << "CountBM: " << countBM << " i: " << i << " BMIN: " << Bminterms[i][countBM] << " TTABLE: " << TTable[j][k] << " j: " << j << endl;
+                if (countBM< Bminterms[i].size())
+                {
+                    if (Bminterms[i][countBM] == '-')
+                    {
+                        countBM++;
+                        if (countBM == Bminterms[i].size())
+                        {
+                            TTable[j][TTable[j].size() - 1] = 1;
+                            //cout << "CountBM: " << countBM << " i: " << i << " TTABLE: " << TTable[j][TTable[j].size() - 1] << " j: " << j << endl;
+                        }
+                    }
+                    else
+                    {
+                        if (bool(Bminterms[i][countBM]-'0') == TTable[j][k])
+                        {
+                            countBM++;
+                            if (countBM == Bminterms[i].size())
+                            {
+                                TTable[j][TTable[j].size() - 1] = 1;
+                                //cout << "CountBM: " << countBM << " i: " << i << " TTABLE: " << TTable[j][TTable[j].size() - 1] << " j: " << j << endl;
+                            }
+
+                        }
+                        else
+                        {
+                            countBM = 0;
+                            k = TTable[j].size();
+                        }
+                    }
+                }
+                else
+                {
+                        TTable[j][TTable[j].size() - 1] = 1;
+                        //cout << "CountBM: " << countBM << " i: " << i << " TTABLE: " << TTable[j][TTable[j].size() - 1] << " j: " << j << endl;
+                }
+            }
+        }
+    }
 }
 void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableForVariables
 {
@@ -188,6 +238,7 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
     }
     cout << "F ";
     cout << endl;
+    FTTColFill(TTable, Bminterms);
     for (int i = 0; i < TTable.size(); i++)
     {
         //cout << *IT << "\t";
@@ -197,6 +248,7 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
         }
         cout << endl;
     }
+    
 
 }
 void SoPCleanUp(string SoP) //takes the SoP string and removes the " + " and stores minterms in a vector
