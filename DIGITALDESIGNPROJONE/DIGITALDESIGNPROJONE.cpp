@@ -151,27 +151,31 @@ void SoPtoBinaryString(vector<string>& minterms, vector<string>&Bminterms, set<c
         BinaryT.clear();
     }
 }
+void FTTColFill(vector<vector<bool>>&TTable, vector<string>& Bminterms)
+{
+  
+}
 void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableForVariables
 {
-    vector<vector<bool>>TTable(pow(2,var.size()),vector<bool>(var.size(),0));
+    vector<vector<bool>>TTable(pow(2,var.size()),vector<bool>(var.size()+1,0));
     set<char>::iterator IT;
     IT = var.begin();
     for (int i = 0; i < var.size(); i++)
     {
-        cout << "i: " << i << endl;
+        //cout << "i: " << i << endl;
         int count = 0;
         for (int j = 0; j < pow(2, i); j++)
         {
             //cout << "Row: " << j << " ";
-            cout << "j: " << j << endl;
+            //cout << "j: " << j << endl;
             for (int k = 0; k < pow(2, var.size() - i-1); k++)
             {
                 count++;
             }
-            cout << "count: " << count<< endl;
+            //cout << "count: " << count<< endl;
             for (int k = count; k < count+pow(2,var.size()-i-1); k++)
             {
-                cout << "k: " << k << " i: " << i << endl;
+                //cout << "k: " << k << " i: " << i << endl;
                 TTable[k][i]=1;
             }
             count = count + pow(2, var.size() - i - 1);
@@ -182,6 +186,7 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
     {
         cout << *IT << " ";
     }
+    cout << "F ";
     cout << endl;
     for (int i = 0; i < TTable.size(); i++)
     {
@@ -192,6 +197,7 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
         }
         cout << endl;
     }
+
 }
 void SoPCleanUp(string SoP) //takes the SoP string and removes the " + " and stores minterms in a vector
 {
