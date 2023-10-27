@@ -213,7 +213,7 @@ void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var)
         }
     }
 }
-void FTTColFill(vector<vector<bool>>&TTable, vector<string>& Bminterms)
+void FTTColFillSOP (vector<vector<bool>>&TTable, vector<string>& Bminterms)
 {
     //cout << "FFTCOLFILL";
     for (int i = 0; i < Bminterms.size(); i++)
@@ -263,7 +263,7 @@ void FTTColFill(vector<vector<bool>>&TTable, vector<string>& Bminterms)
         }
     }
 }
-void FTTColFill(vector<vector<bool>>&TTable, vector<string>& Bmaxterms)
+void FTTColFillPOS (vector<vector<bool>>&TTable, vector<string>& Bmaxterms)
 {
     //cout << "FFTCOLFILL";
     for (int i = 0; i < Bmaxterms.size(); i++)
