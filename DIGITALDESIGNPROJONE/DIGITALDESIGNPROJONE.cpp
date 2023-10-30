@@ -7,6 +7,23 @@
 #include <string>
 #include <cmath>
 using namespace std;
+void OnesMapPrint(map<int, vector<string>>& IMPG)
+{
+    map<int, vector<string>>::iterator IT;
+    for (IT = IMPG.begin(); IT != IMPG.end(); IT++)
+    {
+        cout << IT->first << endl;
+        for (int i = 0; i < IT->second.size(); i++)
+        {
+            cout << IT->second[i] << " ";
+        }
+        cout << endl;
+    }
+}
+void ImplicantGroup()
+{
+
+}
 void SVectorPrint(vector<string>V) //prints a 1d string vector
 {
     for (int i = 0; i < V.size(); i++)
@@ -163,8 +180,33 @@ void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<
         BinaryT.clear();
     }
 }
+void GroupByOnes(vector<string>&CmintermsB, map<int, vector<string>>&IMPG)
+{
+    for (int i = 0; i < CmintermsB.size(); i++)
+    {
+        int count = 0;
+        for (int j = 0; j < CmintermsB[i].size(); j++)
+        {
 
-void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var)
+            if (CmintermsB[i][j] == '1')
+            {
+                count++;
+            }
+        }
+        if (IMPG.find(count)!=IMPG.end())
+        {
+            IMPG.find(count)->second.push_back(CmintermsB[i]);
+        }
+        else
+        {
+            vector<string> EMP;
+            EMP.push_back(CmintermsB[i]);
+            IMPG.emplace(count, EMP);
+        }
+    }
+    OnesMapPrint(IMPG);
+}
+void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var,vector<string>&Cminterms)
 {
     vector<string>SOPs;
     vector<string>POSs;
@@ -232,6 +274,7 @@ void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var)
         cout << POSs[i];
     }
     cout << endl;
+    Cminterms = SOPs;
 }
 void FTTColFillSOP (vector<vector<bool>>&TTable, vector<string>& Bminterms)
 {
@@ -375,7 +418,13 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
         }
         cout << endl;
     }
-    PrintMinMaxterms(TTable, var);
+    vector<string>CMinterms;
+    vector<string>CMintermsB;
+    PrintMinMaxterms(TTable, var,CMinterms);
+    SoPtoBinaryString(CMinterms, CMintermsB,var);
+    //SVectorPrint(CMintermsB);
+    map<int, vector<string>>IMPG;
+    GroupByOnes(CMintermsB, IMPG);
 
 }
 void PoSCleanUp(string PoS) //Removes the brackets from the PoS string and puts the terms in a vector
