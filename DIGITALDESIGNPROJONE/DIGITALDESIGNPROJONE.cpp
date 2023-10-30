@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <string>
 #include <cmath>
+#include <unordered_set>
 using namespace std;
 void OnesMapPrint(map<int, vector<string>>& IMPG)
 {
@@ -20,10 +21,6 @@ void OnesMapPrint(map<int, vector<string>>& IMPG)
         cout << endl;
     }
 }
-void ImplicantGroup()
-{
-
-}
 void SVectorPrint(vector<string>V) //prints a 1d string vector
 {
     for (int i = 0; i < V.size(); i++)
@@ -32,6 +29,14 @@ void SVectorPrint(vector<string>V) //prints a 1d string vector
     }
     //cout << "Print" << endl;
 }
+void SSetPrint(unordered_set<string>S) //orints a 1 d char set
+{
+    unordered_set<string>::iterator IT;
+    for (IT = S.begin(); IT != S.end(); IT++)
+    {
+        cout << *IT << endl;
+    }
+}
 void CSetPrint(set<char>S) //orints a 1 d char set
 {
     set<char>::iterator IT;
@@ -39,6 +44,95 @@ void CSetPrint(set<char>S) //orints a 1 d char set
     {
         cout << *IT << endl;
     }
+}
+void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
+{
+    map<int, vector<string>>::iterator IT1;
+    map<int, vector<string>>::iterator IT2;
+    unordered_set<string>EPI;
+    unordered_set<string>PI;
+    //unordered_set<string>PI;
+    unordered_set<string>Found;
+    for (IT1 = IMPG.begin(); IT1 != IMPG.end()--; IT1++)
+    {
+       // cout << "IT1" << " ";
+        for (int i = 0; i < IT1->second.size(); i++)
+        {
+            //cout << "I" << " ";
+            IT2 = IT1;
+            IT2++;
+            
+            for (IT2; IT2 != IMPG.end(); IT2++)
+            {
+                //cout << "IT2" << " ";
+                
+                for (int j = 0; j < IT2->second.size(); j++)
+                {
+                    //cout << "J" << " ";
+                    int flag = 0;
+                    bool flag2 = 0;
+                    string NPI = IT1->second[i];
+                    //cout << NPI << endl;
+                    for (int k = 0; k < IT2->second[j].size(); k++)
+                    {
+                        //cout << "K" << " ";
+                        
+                            if (IT1->second[i][k] == IT2->second[j][k])
+                            {
+
+                            }
+                            else
+                            {
+                                if (IT1->second[i][k] == '-' || IT2->second[j][k] == '-')
+                                {
+
+                                }
+                                else
+                                {
+                                    
+                                    if (flag != 1)
+                                    {
+                                        NPI[k] = '-';
+                                    }
+                                    else if (k == IT2->second[j].size() - 1)
+                                    {
+                                        NPI[k] = '-';
+                                    }
+
+                                    flag++;
+                                }
+                            }
+                            
+                            
+                    }
+                    if (flag == 1)
+                    {
+                        flag2 = 1;
+                    }
+                    if (flag2 != 0)
+                    {
+                        //cout << "Found comparison" << endl;
+                        //cout << IT1->second[i] << " " << NPI << " " << IT2->second[j] << " " << endl;
+                        PI.emplace(NPI);
+                        Found.emplace(IT1->second[i]);
+                        Found.emplace(IT2->second[j]);
+                    }
+                    
+                       
+                }
+            }
+            if (Found.find(IT1->second[i]) == Found.end())
+            {
+                EPI.emplace(IT1->second[i]);
+            }
+        }
+        
+
+    }
+    cout << "EPIs: " << endl;
+    SSetPrint(EPI);
+    cout << "PIs: " << endl;
+    SSetPrint(PI);
 }
 bool PoSValidation(vector<string>& maxterms, set<char>& var) //checks if the number of variables in a PoS in less than 11(+2 " ","+")
 {
@@ -425,6 +519,7 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
     //SVectorPrint(CMintermsB);
     map<int, vector<string>>IMPG;
     GroupByOnes(CMintermsB, IMPG);
+    ImplicantGroupComparison(IMPG);
 
 }
 void PoSCleanUp(string PoS) //Removes the brackets from the PoS string and puts the terms in a vector
