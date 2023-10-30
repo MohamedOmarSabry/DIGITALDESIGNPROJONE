@@ -23,7 +23,7 @@ void CSetPrint(set<char>S) //orints a 1 d char set
         cout << *IT << endl;
     }
 }
-bool PoSValidation(vector<string>& maxterms) //checks if the number of variables in a PoS in less than 11(+2 " ","+")
+bool PoSValidation(vector<string>& maxterms, set<char>& var) //checks if the number of variables in a PoS in less than 11(+2 " ","+")
 {
     set<char> varss;
     for (int i = 0; i < maxterms.size(); i++)
@@ -45,6 +45,7 @@ bool PoSValidation(vector<string>& maxterms) //checks if the number of variables
 
         }
     }
+    var = varss;
     //CSetPrint(varss);
     if (varss.size() < 11)
     {
@@ -54,33 +55,6 @@ bool PoSValidation(vector<string>& maxterms) //checks if the number of variables
     {
         return false;
     }
-}
-void PoSCleanUp(string PoS) //Removes the brackets from the PoS string and puts the terms in a vector
-{
-    vector<string> maxterms;
-    for (int i = 0; i < PoS.length()-1;)
-    {
-        if (PoS.find("(") == PoS.npos)
-        {
-            // i = SoP.length();
-             //cout << "No more" << endl;
-            //maxterms.push_back(PoS);
-            //PoS = PoS.substr(i);
-            //cout << SoP << endl;
-            SVectorPrint(maxterms);
-            i = PoS.length() - 1;
-        }
-        else
-        {
-            maxterms.push_back(PoS.substr(i+1, PoS.find(")")-1));
-            //cout << SoP.substr(i, SoP.find(" + "))<<"DONE" << endl;
-            PoS = PoS.substr(PoS.find(")") + 1);
-            //cout << SoP << "after substr" << endl;
-            //SoP.erase(0,SoP.find_first_not_of(" + "));
-            //cout << SoP << "after erase" << endl;
-        }
-    }
-    //PoSValidation(maxterms);
 }
 bool SoPValidation2(vector<string>& minterms,set<char>& var) //validates number of variables is less than 11
 {
@@ -345,7 +319,7 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
     }
     cout << "F ";
     cout << endl;
-    FTTColFill(TTable, Bminterms);
+    FTTColFillSOP(TTable, Bminterms);
     for (int i = 0; i < TTable.size(); i++)
     {
         //cout << *IT << "\t";
@@ -358,6 +332,39 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
     
 
 }
+void PoSCleanUp(string PoS) //Removes the brackets from the PoS string and puts the terms in a vector
+{
+    vector<string> maxterms;
+    for (int i = 0; i < PoS.length() - 1;)
+    {
+        if (PoS.find("(") == PoS.npos)
+        {
+            // i = SoP.length();
+             //cout << "No more" << endl;
+            //maxterms.push_back(PoS);
+            //PoS = PoS.substr(i);
+            //cout << SoP << endl;
+            SVectorPrint(maxterms);
+            i = PoS.length() - 1;
+        }
+        else
+        {
+            maxterms.push_back(PoS.substr(i + 1, PoS.find(")") - 1));
+            //cout << SoP.substr(i, SoP.find(" + "))<<"DONE" << endl;
+            PoS = PoS.substr(PoS.find(")") + 1);
+            //cout << SoP << "after substr" << endl;
+            //SoP.erase(0,SoP.find_first_not_of(" + "));
+            //cout << SoP << "after erase" << endl;
+        }
+    }
+    set<char>varss;
+    PoSValidation(maxterms, varss);
+    CSetPrint(varss);
+    vector<string>Bmaxterms;
+    PoStoBinaryString(maxterms, Bmaxterms, varss);
+    //TTableBuild
+}
+
 void SoPCleanUp(string SoP) //takes the SoP string and removes the " + " and stores minterms in a vector
 {
     vector<string> minterms;
@@ -424,9 +431,9 @@ int main()
     //-Number of variables not more than 10
     //TESTING:
     //test
-    //string PoST = "(a + b)(b + c)(c + d)";
-    //PoSCleanUp(PoST);
-    string SopT = "abc + bcd + ac'e";
-    cout << SoPValidation1(SopT) << endl;
-    SoPCleanUp(SopT);
+    string PoST = "(a + b)(b + c)(c + d)";
+    PoSCleanUp(PoST);
+    //string SopT = "abc + bcd + ac'e";
+    //cout << SoPValidation1(SopT) << endl;
+    //SoPCleanUp(SopT);
 }
