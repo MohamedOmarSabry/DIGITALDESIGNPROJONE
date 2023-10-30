@@ -45,6 +45,38 @@ void CSetPrint(set<char>S) //orints a 1 d char set
         cout << *IT << endl;
     }
 }
+void GroupByOnesIMP(unordered_set<string> implicants, map<int, vector<string>>& IMPG)
+{
+    unordered_set<string>::iterator IT;
+    string T = "";
+    for (IT=implicants.begin(); IT != implicants.end(); IT++)
+    {
+        int count = 0;
+        for (int j = 0; j < IT->size(); j++)
+        {
+            T = *IT;
+            if (T[j] == '1')
+            {
+                count++;
+            }
+            else if (T[j] == '-')
+            {
+                count++;
+            }
+        }
+        if (IMPG.find(count) != IMPG.end())
+        {
+            IMPG.find(count)->second.push_back(*IT);
+        }
+        else
+        {
+            vector<string> EMP;
+            EMP.push_back(*IT);
+            IMPG.emplace(count, EMP);
+        }
+    }
+    OnesMapPrint(IMPG);
+}
 void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
 {
     map<int, vector<string>>::iterator IT1;
@@ -53,43 +85,39 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
     unordered_set<string>PI;
     //unordered_set<string>PI;
     unordered_set<string>Found;
-    for (IT1 = IMPG.begin(); IT1 != IMPG.end()--; IT1++)
+    while (IMPG.size() != 0)
     {
-       // cout << "IT1" << " ";
-        for (int i = 0; i < IT1->second.size(); i++)
+        for (IT1 = IMPG.begin(); IT1 != IMPG.end()--; IT1++)
         {
-            //cout << "I" << " ";
-            IT2 = IT1;
-            IT2++;
-            
-            for (IT2; IT2 != IMPG.end(); IT2++)
+            // cout << "IT1" << " ";
+            for (int i = 0; i < IT1->second.size(); i++)
             {
-                //cout << "IT2" << " ";
-                
-                for (int j = 0; j < IT2->second.size(); j++)
+                //cout << "I" << " ";
+                IT2 = IT1;
+                IT2++;
+
+                for (IT2; IT2 != IMPG.end(); IT2++)
                 {
-                    //cout << "J" << " ";
-                    int flag = 0;
-                    bool flag2 = 0;
-                    string NPI = IT1->second[i];
-                    //cout << NPI << endl;
-                    for (int k = 0; k < IT2->second[j].size(); k++)
+                    //cout << "IT2" << " ";
+
+                    for (int j = 0; j < IT2->second.size(); j++)
                     {
-                        //cout << "K" << " ";
-                        
+                        //cout << "J" << " ";
+                        int flag = 0;
+                        bool flag2 = 0;
+                        string NPI = IT1->second[i];
+                        //cout << NPI << endl;
+                        for (int k = 0; k < IT2->second[j].size(); k++)
+                        {
+                            //cout << "K" << " ";
+
                             if (IT1->second[i][k] == IT2->second[j][k])
                             {
 
                             }
                             else
                             {
-                                if (IT1->second[i][k] == '-' || IT2->second[j][k] == '-')
-                                {
 
-                                }
-                                else
-                                {
-                                    
                                     if (flag != 1)
                                     {
                                         NPI[k] = '-';
@@ -100,39 +128,44 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
                                     }
 
                                     flag++;
-                                }
                             }
-                            
-                            
+
+
+                        }
+                        if (flag == 1)
+                        {
+                            flag2 = 1;
+                        }
+                        if (flag2 != 0)
+                        {
+                            //cout << "Found comparison" << endl;
+                            //cout << IT1->second[i] << " " << NPI << " " << IT2->second[j] << " " << endl;
+                            PI.emplace(NPI);
+                            Found.emplace(IT1->second[i]);
+                            Found.emplace(IT2->second[j]);
+                        }
+
+
                     }
-                    if (flag == 1)
-                    {
-                        flag2 = 1;
-                    }
-                    if (flag2 != 0)
-                    {
-                        //cout << "Found comparison" << endl;
-                        //cout << IT1->second[i] << " " << NPI << " " << IT2->second[j] << " " << endl;
-                        PI.emplace(NPI);
-                        Found.emplace(IT1->second[i]);
-                        Found.emplace(IT2->second[j]);
-                    }
-                    
-                       
+                }
+                if (Found.find(IT1->second[i]) == Found.end())
+                {
+                    EPI.emplace(IT1->second[i]);
                 }
             }
-            if (Found.find(IT1->second[i]) == Found.end())
-            {
-                EPI.emplace(IT1->second[i]);
-            }
-        }
-        
 
+
+        }
+        cout << "EPIs: " << endl;
+        SSetPrint(EPI);
+        cout << "PIs: " << endl;
+        SSetPrint(PI);
+        IMPG.clear();
+        GroupByOnesIMP(PI,IMPG);
+        //EPI.clear();
+        PI.clear();
     }
-    cout << "EPIs: " << endl;
-    SSetPrint(EPI);
-    cout << "PIs: " << endl;
-    SSetPrint(PI);
+    
 }
 bool PoSValidation(vector<string>& maxterms, set<char>& var) //checks if the number of variables in a PoS in less than 11(+2 " ","+")
 {
