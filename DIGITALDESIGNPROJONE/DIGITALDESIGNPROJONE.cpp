@@ -164,6 +164,7 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
         GroupByOnesIMP(PI,IMPG);
         //EPI.clear();
         PI.clear();
+        //Store PIs
     }
     
 }
@@ -655,6 +656,7 @@ int main()
     //-Number of variables not more than 10
     //TESTING:
     //test
+    // Things left: Pos not working, Turn cannocial sop to numbers. Save prime implicants, show minterms covered by them. Turn EPIS into booleans.
     //string PoST = "(a + b)(b + c)(c + d)";
     //PoSCleanUp(PoST);
     string SopT = "abc + bcd + ac'e";
