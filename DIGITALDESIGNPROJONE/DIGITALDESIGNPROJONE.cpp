@@ -166,26 +166,72 @@ void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<
 
 void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var)
 {
-    set<char>::iterator IT;
-    
-
+    vector<string>SOPs;
+    vector<string>POSs;
     for (int i = 0; i < TTable.size(); i++)
     {
-        if (TTable[i][TTable[i].size() - 1] == 1)
+        set<char>::iterator IT;
+        IT = var.begin();
+        string POS = "";
+        string SOP = "";
+        //cout << TTable[i][TTable[i].size() - 1] << endl;
+        if (TTable[i][TTable[i].size()-1] == bool(1))
         {
-            for (IT = var.begin(); IT != var.end(); IT++)
+            for (int j = 0; j < TTable[i].size() - 1; j++)
             {
-                for (int j = 0; j < TTable[i].size(); j++)
+                if (TTable[i][j] == 1)
                 {
-
+                    SOP.push_back(*IT);
+                    IT++;
+                }
+                else
+                {
+                    SOP.push_back(*IT);
+                    SOP.append("'");
+                    IT++;
                 }
             }
+            //cout << SOP << endl;
+            SOPs.push_back(SOP);
         }
         else
         {
-
+            POS.append("(");
+            for (int j = 0; j < TTable[i].size() - 1; j++)
+            {
+                if (TTable[i][j] == 1)
+                {
+                    POS.push_back(*IT);
+                    POS.append("'");
+                    IT++;
+                }
+                else
+                {
+                    POS.push_back(*IT);
+                    IT++;
+                }
+            }
+            POS.append(")");
+            //cout << POS << endl;
+            POSs.push_back(POS);
         }
     }
+    cout << "Cannonical SoP: " << endl;
+    for (int i = 0; i < SOPs.size(); i++)
+    {
+        cout << SOPs[i];
+        if (i != SOPs.size() - 1)
+        {
+            cout<< " + ";
+        }
+    }
+    cout << endl;
+    cout << "Cannonical PoS: " << endl;
+    for (int i = 0; i < POSs.size(); i++)
+    {
+        cout << POSs[i];
+    }
+    cout << endl;
 }
 void FTTColFillSOP (vector<vector<bool>>&TTable, vector<string>& Bminterms)
 {
@@ -329,7 +375,7 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
         }
         cout << endl;
     }
-    
+    PrintMinMaxterms(TTable, var);
 
 }
 void PoSCleanUp(string PoS) //Removes the brackets from the PoS string and puts the terms in a vector
@@ -396,6 +442,7 @@ void SoPCleanUp(string SoP) //takes the SoP string and removes the " + " and sto
     vector<string>Bminterms;
     SoPtoBinaryString(minterms, Bminterms, var);
     TTableBuild(var, Bminterms);
+    
 }
 bool SoPValidation1(string SoP) //checks if SoP has a PoS
 {
@@ -431,9 +478,9 @@ int main()
     //-Number of variables not more than 10
     //TESTING:
     //test
-    string PoST = "(a + b)(b + c)(c + d)";
-    PoSCleanUp(PoST);
-    //string SopT = "abc + bcd + ac'e";
-    //cout << SoPValidation1(SopT) << endl;
-    //SoPCleanUp(SopT);
+    //string PoST = "(a + b)(b + c)(c + d)";
+    //PoSCleanUp(PoST);
+    string SopT = "abc + bcd + ac'e";
+    cout << SoPValidation1(SopT) << endl;
+    SoPCleanUp(SopT);
 }
