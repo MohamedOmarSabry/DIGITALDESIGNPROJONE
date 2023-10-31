@@ -92,6 +92,7 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
     map<int, vector<string>>::iterator IT2;
     unordered_set<string>EPI;
     unordered_set<string>PI;
+    unordered_set<string>PIs;
     //unordered_set<string>PI;
     unordered_set<string>Found;
     while (IMPG.size() != 0)
@@ -150,6 +151,7 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
                             //cout << "Found comparison" << endl;
                             //cout << IT1->second[i] << " " << NPI << " " << IT2->second[j] << " " << endl;
                             PI.emplace(NPI);
+                            PIs.emplace(NPI);
                             Found.emplace(IT1->second[i]);
                             Found.emplace(IT2->second[j]);
                         }
@@ -165,14 +167,16 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
 
 
         }
-        cout << "PIs: " << endl;
-        SSetPrint(PI);
+        //cout << "PIs: " << endl;
+        //SSetPrint(PI);
         IMPG.clear();
         GroupByOnesIMP(PI,IMPG);
         //EPI.clear();
         PI.clear();
         //Store PIs
     }
+    cout << "PIs: " << endl;
+    SSetPrint(PIs);
     cout << "EPIs: " << endl;
     SSetPrint(EPI);
     
@@ -734,7 +738,9 @@ int main()
     //string PoST = "(a + b)(b + c)(c + d)";
     //PoSCleanUp(PoST);
     //string SopT = "abc + bcd + ac'e";
-    string SopT = "ac + ba + aab + ccc";
+    //string SopT = "ac + ba + aab + ccc";
+    //string SopT = "a";
+    string SopT = "a + b' + c";
     cout << SoPValidation1(SopT) << endl;
     SoPCleanUp(SopT);
 }
