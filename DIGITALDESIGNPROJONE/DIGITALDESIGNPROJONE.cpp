@@ -11,6 +11,7 @@ using namespace std;
 void OnesMapPrint(map<int, vector<string>>& IMPG)
 {
     map<int, vector<string>>::iterator IT;
+    //cout << "Groups: " << endl;
     for (IT = IMPG.begin(); IT != IMPG.end(); IT++)
     {
         cout << IT->first << endl;
@@ -164,8 +165,6 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
 
 
         }
-        cout << "EPIs: " << endl;
-        SSetPrint(EPI);
         cout << "PIs: " << endl;
         SSetPrint(PI);
         IMPG.clear();
@@ -174,6 +173,8 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
         PI.clear();
         //Store PIs
     }
+    cout << "EPIs: " << endl;
+    SSetPrint(EPI);
     
 }
 bool PoSValidation(vector<string>& maxterms, set<char>& var) //checks if the number of variables in a PoS in less than 11(+2 " ","+")
@@ -732,7 +733,8 @@ int main()
     // Things left: Pos not working, Turn cannocial sop to numbers. Save prime implicants, show minterms covered by them. Turn EPIS into booleans.
     //string PoST = "(a + b)(b + c)(c + d)";
     //PoSCleanUp(PoST);
-    string SopT = "abc + bcd + ac'e";
+    //string SopT = "abc + bcd + ac'e";
+    string SopT = "ac + ba + aab + ccc";
     cout << SoPValidation1(SopT) << endl;
     SoPCleanUp(SopT);
 }
