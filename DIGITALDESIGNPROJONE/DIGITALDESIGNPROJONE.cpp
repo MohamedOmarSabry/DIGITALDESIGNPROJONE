@@ -45,6 +45,14 @@ void CSetPrint(set<char>S) //orints a 1 d char set
         cout << *IT << endl;
     }
 }
+void ISetPrint(set<int>S) //orints a 1 d char set
+{
+    set<int>::iterator IT;
+    for (IT = S.begin(); IT != S.end(); IT++)
+    {
+        cout << *IT << endl;
+    }
+}
 void GroupByOnesIMP(unordered_set<string> implicants, map<int, vector<string>>& IMPG)
 {
     unordered_set<string>::iterator IT;
@@ -232,6 +240,63 @@ bool SoPValidation2(vector<string>& minterms,set<char>& var) //validates number 
     }
    
 }
+void SoPtoBinaryString2(vector<string>& minterms, set<char>& var) //takes the minterm vector and number of variables and var set and creates the binary version of the minterms
+{
+    //minterm vars should be ascending
+    //cout << "SOPBS" << endl;
+    string BinaryT;
+    vector<string>Bminterms;
+    set<int>Cannoncial;
+    set<char>::iterator IT;
+    for (int i = 0; i < minterms.size(); i++)
+    {
+        for (IT = var.begin(); IT != var.end(); IT++)
+        {
+            if (minterms[i].find(*IT) != minterms[i].npos)
+            {
+                if (minterms[i].find(*IT) == minterms[i].length() - 1)
+                {
+                    BinaryT.append("1");
+                }
+                else
+                {
+                    if (minterms[i][minterms[i].find(*IT) + 1] == '\'')
+                    {
+                        BinaryT.append("0");
+                    }
+                    else
+                    {
+                        BinaryT.append("1");
+                    }
+                }
+            }
+            else
+            {
+                BinaryT.append("-");
+            }
+        }
+        Bminterms.push_back(BinaryT);
+        cout << BinaryT << endl;
+        BinaryT.clear();
+    }
+    for (int i = 0; i < Bminterms.size(); i++)
+    {
+        int count = 0;
+        for (int j = 0; j < Bminterms[i].size(); j++)
+        {
+            if (Bminterms[i][j] == '0')
+            {
+                
+            }
+            else
+            {
+                count = count + pow(2, Bminterms[i].size()-j-1);
+            }
+        }
+        Cannoncial.emplace(count);
+    }
+    ISetPrint(Cannoncial);
+}
 void SoPtoBinaryString(vector<string>& minterms, vector<string>&Bminterms, set<char>& var) //takes the minterm vector and number of variables and var set and creates the binary version of the minterms
 {
     //minterm vars should be ascending
@@ -349,7 +414,7 @@ void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var,vector<string
         {
             for (int j = 0; j < TTable[i].size() - 1; j++)
             {
-                if (TTable[i][j] == 1)
+                if (TTable[i][j] == bool(1))
                 {
                     SOP.push_back(*IT);
                     IT++;
@@ -369,7 +434,7 @@ void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var,vector<string
             POS.append("(");
             for (int j = 0; j < TTable[i].size() - 1; j++)
             {
-                if (TTable[i][j] == 1)
+                if (TTable[i][j] == bool(1))
                 {
                     POS.push_back(*IT);
                     POS.append("'");
@@ -380,6 +445,11 @@ void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var,vector<string
                     POS.push_back(*IT);
                     IT++;
                 }
+                if (j != TTable[i].size() - 2)
+                {
+                    POS.append(" + ");
+                }
+                
             }
             POS.append(")");
             //cout << POS << endl;
@@ -396,12 +466,15 @@ void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var,vector<string
         }
     }
     cout << endl;
+    SoPtoBinaryString2(SOPs, var);
     cout << "Cannonical PoS: " << endl;
     for (int i = 0; i < POSs.size(); i++)
     {
         cout << POSs[i];
     }
     cout << endl;
+    //PoStoBinaryString2(POSs, var);
+    //Needs to be fixed
     Cminterms = SOPs;
 }
 void FTTColFillSOP (vector<vector<bool>>&TTable, vector<string>& Bminterms)
