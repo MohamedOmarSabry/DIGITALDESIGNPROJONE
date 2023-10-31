@@ -730,6 +730,59 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
     ImplicantGroupComparison(IMPG);
 
 }
+void TTableBuild2(set<char>& var, vector<string>& Bmaxterms) //createsTruthTableForVariables
+{
+    vector<vector<bool>>TTable(pow(2, var.size()), vector<bool>(var.size() + 1, 0));
+    set<char>::iterator IT;
+    IT = var.begin();
+    for (int i = 0; i < var.size(); i++)
+    {
+        //cout << "i: " << i << endl;
+        int count = 0;
+        for (int j = 0; j < pow(2, i); j++)
+        {
+            //cout << "Row: " << j << " ";
+            //cout << "j: " << j << endl;
+            for (int k = 0; k < pow(2, var.size() - i - 1); k++)
+            {
+                count++;
+            }
+            //cout << "count: " << count<< endl;
+            for (int k = count; k < count + pow(2, var.size() - i - 1); k++)
+            {
+                //cout << "k: " << k << " i: " << i << endl;
+                TTable[k][i] = 1;
+            }
+            count = count + pow(2, var.size() - i - 1);
+        }
+        //IT++;
+    }
+    for (IT; IT != var.end(); IT++)
+    {
+        cout << *IT << " ";
+    }
+    cout << "F ";
+    cout << endl;
+    FTTColFillPOS(TTable, Bmaxterms);
+    for (int i = 0; i < TTable.size(); i++)
+    {
+        //cout << *IT << "\t";
+        for (int j = 0; j < TTable[i].size(); j++)
+        {
+            cout << TTable[i][j] << " ";
+        }
+        cout << endl;
+    }
+    vector<string>CMaxterms;
+    vector<string>CMaxtermsB;
+    PrintMinMaxterms(TTable, var, CMaxterms);
+    SoPtoBinaryString(CMaxterms, CMaxtermsB, var);
+    //SVectorPrint(CMintermsB);
+    map<int, vector<string>>IMPG;
+    GroupByOnes(CMaxtermsB, IMPG);
+    ImplicantGroupComparison(IMPG);
+
+}
 void PoSCleanUp(string PoS) //Removes the brackets from the PoS string and puts the terms in a vector
 {
     vector<string> maxterms;
@@ -760,7 +813,7 @@ void PoSCleanUp(string PoS) //Removes the brackets from the PoS string and puts 
     CSetPrint(varss);
     vector<string>Bmaxterms;
     PoStoBinaryString(maxterms, Bmaxterms, varss);
-    //TTableBuild
+    TTableBuild2(varss, Bmaxterms);
 }
 
 void SoPCleanUp(string SoP) //takes the SoP string and removes the " + " and stores minterms in a vector
