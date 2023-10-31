@@ -370,7 +370,63 @@ void PrintCanonicalForms(vector<string>& Bminterms, vector<string>& Bmaxterms, s
         }
     }
 }
+void PoStoBinaryString2(vector<string>& maxterms, set<char>& var)
+{
+    cout << "POSBS" << endl;
+    string BinaryT;
+    vector<string>Bmaxterms;
+    set<int>Cannoncial;
+    set<char>::iterator IT;
 
+    for (int i = 0; i < maxterms.size(); i++)
+    {
+        for (IT = var.begin(); IT != var.end(); IT++)
+        {
+            if (maxterms[i].find(*IT) != maxterms[i].npos)
+            {
+                if (maxterms[i].find(*IT) == maxterms[i].length() - 1)
+                {
+                    BinaryT.append("0");  // Change "1" to "0" for PoS
+                }
+                else
+                {
+                    if (maxterms[i][maxterms[i].find(*IT) + 1] == '\'')
+                    {
+                        BinaryT.append("1");
+                    }
+                    else
+                    {
+                        BinaryT.append("0");  // Change "1" to "0" for PoS
+                    }
+                }
+            }
+            else
+            {
+                BinaryT.append("1");  // Change "-" to "1" for PoS
+            }
+        }
+        Bmaxterms.push_back(BinaryT);
+        cout << BinaryT << endl;
+        BinaryT.clear();
+    }
+    for (int i = 0; i < Bmaxterms.size(); i++)
+    {
+        int count = 0;
+        for (int j = 0; j < Bmaxterms[i].size(); j++)
+        {
+            if (Bmaxterms[i][j] == '0')
+            {
+
+            }
+            else
+            {
+                count = count + pow(2, Bmaxterms[i].size() - j - 1);
+            }
+        }
+        Cannoncial.emplace(count);
+    }
+    ISetPrint(Cannoncial);
+}
 void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<char>& var)
 {
     cout << "POSBS" << endl;
@@ -509,7 +565,7 @@ void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var,vector<string
         cout << POSs[i];
     }
     cout << endl;
-    //PoStoBinaryString2(POSs, var);
+    PoStoBinaryString2(POSs, var);
     //Needs to be fixed
     Cminterms = SOPs;
 }
