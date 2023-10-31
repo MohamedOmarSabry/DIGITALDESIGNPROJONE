@@ -51,8 +51,9 @@ void ISetPrint(set<int>S) //orints a 1 d char set
     set<int>::iterator IT;
     for (IT = S.begin(); IT != S.end(); IT++)
     {
-        cout << *IT << endl;
+        cout << *IT<<" ";
     }
+    cout << endl;
 }
 void GroupByOnesIMP(unordered_set<string> implicants, map<int, vector<string>>& IMPG)
 {
@@ -84,7 +85,7 @@ void GroupByOnesIMP(unordered_set<string> implicants, map<int, vector<string>>& 
             IMPG.emplace(count, EMP);
         }
     }
-    OnesMapPrint(IMPG);
+    //OnesMapPrint(IMPG);
 }
 void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
 {
@@ -281,7 +282,7 @@ void SoPtoBinaryString2(vector<string>& minterms, set<char>& var) //takes the mi
             }
         }
         Bminterms.push_back(BinaryT);
-        cout << BinaryT << endl;
+        //cout << BinaryT << endl;
         BinaryT.clear();
     }
     for (int i = 0; i < Bminterms.size(); i++)
@@ -300,12 +301,13 @@ void SoPtoBinaryString2(vector<string>& minterms, set<char>& var) //takes the mi
         }
         Cannoncial.emplace(count);
     }
+    cout << "Cannonical SOP: " << endl;
     ISetPrint(Cannoncial);
 }
 void SoPtoBinaryString(vector<string>& minterms, vector<string>&Bminterms, set<char>& var) //takes the minterm vector and number of variables and var set and creates the binary version of the minterms
 {
     //minterm vars should be ascending
-    cout << "SOPBS" << endl;
+    //cout << "SOPBS" << endl;
     string BinaryT;
     set<char>::iterator IT;
     for (int i = 0; i < minterms.size(); i++)
@@ -336,7 +338,7 @@ void SoPtoBinaryString(vector<string>& minterms, vector<string>&Bminterms, set<c
             }
         }
         Bminterms.push_back(BinaryT);
-        cout << BinaryT << endl;
+        //cout << BinaryT << endl;
         BinaryT.clear();
     }
 }
@@ -377,7 +379,7 @@ void PrintCanonicalForms(vector<string>& Bminterms, vector<string>& Bmaxterms, s
 }
 void PoStoBinaryString2(vector<string>& maxterms, set<char>& var)
 {
-    cout << "POSBS" << endl;
+    //cout << "POSBS" << endl;
     string BinaryT;
     vector<string>Bmaxterms;
     set<int>Cannoncial;
@@ -411,7 +413,7 @@ void PoStoBinaryString2(vector<string>& maxterms, set<char>& var)
             }
         }
         Bmaxterms.push_back(BinaryT);
-        cout << BinaryT << endl;
+        //cout << BinaryT << endl;
         BinaryT.clear();
     }
     for (int i = 0; i < Bmaxterms.size(); i++)
@@ -430,11 +432,12 @@ void PoStoBinaryString2(vector<string>& maxterms, set<char>& var)
         }
         Cannoncial.emplace(count);
     }
+    cout << "Cannonical POS: " << endl;
     ISetPrint(Cannoncial);
 }
 void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<char>& var)
 {
-    cout << "POSBS" << endl;
+    //cout << "POSBS" << endl;
 
     for (int i = 0; i < maxterms.size(); i++)
     {
@@ -467,7 +470,7 @@ void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<
         }
 
         Bmaxterms.push_back(BinaryT);
-        cout << BinaryT << endl;
+        //cout << BinaryT << endl;
     }
 }
 
@@ -495,7 +498,7 @@ void GroupByOnes(vector<string>&CmintermsB, map<int, vector<string>>&IMPG)
             IMPG.emplace(count, EMP);
         }
     }
-    OnesMapPrint(IMPG);
+    //OnesMapPrint(IMPG);
 }
 void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var,vector<string>&Cminterms)
 {
@@ -554,7 +557,7 @@ void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var,vector<string
             POSs.push_back(POS);
         }
     }
-    cout << "Cannonical SoP: " << endl;
+    cout << "Cannonical SoP in Boolean Form: " << endl;
     for (int i = 0; i < SOPs.size(); i++)
     {
         cout << SOPs[i];
@@ -565,7 +568,7 @@ void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var,vector<string
     }
     cout << endl;
     SoPtoBinaryString2(SOPs, var);
-    cout << "Cannonical PoS: " << endl;
+    cout << "Cannonical PoS in Boolean Form: " << endl;
     for (int i = 0; i < POSs.size(); i++)
     {
         cout << POSs[i];
@@ -786,11 +789,18 @@ void SoPCleanUp(string SoP) //takes the SoP string and removes the " + " and sto
         }
     }
     set<char> var;
-    cout << SoPValidation2(minterms, var) << endl;
-    CSetPrint(var);
-    vector<string>Bminterms;
-    SoPtoBinaryString(minterms, Bminterms, var);
-    TTableBuild(var, Bminterms);
+    if (SoPValidation2(minterms, var) != 0)
+    {
+        vector<string>Bminterms;
+        SoPtoBinaryString(minterms, Bminterms, var);
+        TTableBuild(var, Bminterms);
+    }
+    else
+    {
+        cout << "More than 10 variables" << endl;
+    }
+    //CSetPrint(var);
+    
     
 }
 bool SoPValidation1(string SoP) //checks if SoP has a PoS
@@ -830,10 +840,103 @@ int main()
     // Things left: Pos not working, Turn cannocial sop to numbers. Save prime implicants, show minterms covered by them. Turn EPIS into booleans.
     //string PoST = "(a + b)(b + c)(c + d)";
     //PoSCleanUp(PoST);
-    //string SopT = "abc + bcd + ac'e";
-    //string SopT = "ac + ba + aab + ccc";
-    //string SopT = "a";
-    string SopT = "a + b' + c";
-    cout << SoPValidation1(SopT) << endl;
-    SoPCleanUp(SopT);
+    for (int i = 0; i < 1;)
+    {
+        cout << "1. Run test cases" << endl;
+        cout << "2. Insert PoS" << endl;
+        cout << "3. Insert SoP" << endl;
+        cout << "4. END" << endl;
+        int x;
+        cin>>x;
+        switch(x)
+        {
+            case 1:
+            {
+                string SopT = "abc + bcd + ac'e";
+                if (SoPValidation1(SopT) != 0)
+                {
+                    SoPCleanUp(SopT);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }
+                SopT = "ac + ba + aab + ccc";
+                if (SoPValidation1(SopT) != 0)
+                {
+                    SoPCleanUp(SopT);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }
+                SopT = "a";
+                if (SoPValidation1(SopT) != 0)
+                {
+                    SoPCleanUp(SopT);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }
+                SopT = "a + b' + c";
+                if (SoPValidation1(SopT) != 0)
+                {
+                    SoPCleanUp(SopT);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }
+                SopT = "(a + b') + c";
+                if (SoPValidation1(SopT) != 0)
+                {
+                    SoPCleanUp(SopT);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }
+                //string SopT = "abc + bcd + ac'e";
+                //SopT = "ac + ba + aab + ccc";
+                //SopT = "a";
+                //SopT = "a + b' + c";
+                //SopT = "(a + b') + c";
+                break;
+            }
+            case 2:
+            {
+                string y = "";
+                cin >> y;
+                if (SoPValidation1(y) != 0)
+                {
+                    SoPCleanUp(y);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }
+                break;
+            }
+            case 3:
+            {
+                string y = "";
+                cin >> y;
+                PoSCleanUp(y);
+                break;
+            }
+            case 4:
+            {
+                i = 1;
+                break;
+            }
+            default:
+            {
+                break;
+            }
+                
+        }
+
+    }
+    
 }
