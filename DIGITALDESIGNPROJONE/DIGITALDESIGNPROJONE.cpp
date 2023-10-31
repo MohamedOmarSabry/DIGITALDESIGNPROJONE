@@ -335,6 +335,42 @@ void SoPtoBinaryString(vector<string>& minterms, vector<string>&Bminterms, set<c
         BinaryT.clear();
     }
 }
+void PrintCanonicalForms(vector<string>& Bminterms, vector<string>& Bmaxterms, set<char>& var) {
+    vector<char> varVector(var.begin(), var.end());
+
+    cout << "Canonical SOP: " << endl;
+    for (int i = 0; i < Bminterms.size(); i++) {
+        if (Bminterms[i].find('-') == string::npos) {
+            cout << "(";
+            for (int j = 0; j < Bminterms[i].size(); j++) {
+                if (Bminterms[i][j] == '0') {
+                    cout << varVector[j] << "' ";
+                }
+                else if (Bminterms[i][j] == '1') {
+                    cout << varVector[j] << " ";
+                }
+            }
+            cout << ") + ";
+        }
+    }
+
+    cout << endl << "Canonical POS: " << endl;
+    for (int i = 0; i < Bmaxterms.size(); i++) {
+        if (Bmaxterms[i].find('-') == string::npos) {
+            cout << "(";
+            for (int j = 0; j < Bmaxterms[i].size(); j++) {
+                if (Bmaxterms[i][j] == '1') {
+                    cout << varVector[j] << "' ";
+                }
+                else if (Bmaxterms[i][j] == '0') {
+                    cout << varVector[j] << " ";
+                }
+            }
+            cout << ") + ";
+        }
+    }
+}
+
 void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<char>& var)
 {
     cout << "POSBS" << endl;
