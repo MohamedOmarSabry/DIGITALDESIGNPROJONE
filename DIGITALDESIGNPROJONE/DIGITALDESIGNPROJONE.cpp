@@ -345,7 +345,7 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
     }
     cout << "F ";
     cout << endl;
-    FTTColFill(TTable, Bminterms);
+    FTTColFillSOP(TTable, Bminterms);
     for (int i = 0; i < TTable.size(); i++)
     {
         //cout << *IT << "\t";
@@ -401,6 +401,41 @@ bool SoPValidation1(string SoP) //checks if SoP has a PoS
         return true;
     }
 }
+void PrintCanonicalForms(vector<string>& Bminterms, vector<string>& Bmaxterms, set<char>& var) {
+    vector<char> varVector(var.begin(), var.end());
+
+    cout << "Canonical SOP: " << endl;
+    for (int i = 0; i < Bminterms.size(); i++) {
+        if (Bminterms[i].find('-') == string::npos) {
+            cout << "(";
+            for (int j = 0; j < Bminterms[i].size(); j++) {
+                if (Bminterms[i][j] == '0') {
+                    cout << varVector[j] << "' ";
+                }
+                else if (Bminterms[i][j] == '1') {
+                    cout << varVector[j] << " ";
+                }
+            }
+            cout << ") + ";
+        }
+    }
+
+    cout << endl << "Canonical POS: " << endl;
+    for (int i = 0; i < Bmaxterms.size(); i++) {
+        if (Bmaxterms[i].find('-') == string::npos) {
+            cout << "(";
+            for (int j = 0; j < Bmaxterms[i].size(); j++) {
+                if (Bmaxterms[i][j] == '1') {
+                    cout << varVector[j] << "' ";
+                }
+                else if (Bmaxterms[i][j] == '0') {
+                    cout << varVector[j] << " ";
+                }
+            }
+            cout << ") + ";
+        }
+    }
+}
 
 int main()
 {
@@ -424,7 +459,12 @@ int main()
     //-Number of variables not more than 10
     //TESTING:
     //test
-    //string PoST = "(a + b)(b + c)(c + d)";
+    string PoST = "(a + b)(b + c)(c + d)";
+    PoSCleanUp(PoST);
+    //PoSValidation(PoSCleanUp(PoST));
+    //PoStoBinaryString(PoST);
+    //cout<< FTTColFillPOS(PoST)<<endl;
+
     //PoSCleanUp(PoST);
     string SopT = "abc + bcd + ac'e";
     cout << SoPValidation1(SopT) << endl;
