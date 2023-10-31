@@ -11,6 +11,7 @@ using namespace std;
 void OnesMapPrint(map<int, vector<string>>& IMPG)
 {
     map<int, vector<string>>::iterator IT;
+    //cout << "Groups: " << endl;
     for (IT = IMPG.begin(); IT != IMPG.end(); IT++)
     {
         cout << IT->first << endl;
@@ -91,6 +92,7 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
     map<int, vector<string>>::iterator IT2;
     unordered_set<string>EPI;
     unordered_set<string>PI;
+    unordered_set<string>PIs;
     //unordered_set<string>PI;
     unordered_set<string>Found;
     while (IMPG.size() != 0)
@@ -149,6 +151,7 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
                             //cout << "Found comparison" << endl;
                             //cout << IT1->second[i] << " " << NPI << " " << IT2->second[j] << " " << endl;
                             PI.emplace(NPI);
+                            PIs.emplace(NPI);
                             Found.emplace(IT1->second[i]);
                             Found.emplace(IT2->second[j]);
                         }
@@ -164,16 +167,18 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
 
 
         }
-        cout << "EPIs: " << endl;
-        SSetPrint(EPI);
-        cout << "PIs: " << endl;
-        SSetPrint(PI);
+        //cout << "PIs: " << endl;
+        //SSetPrint(PI);
         IMPG.clear();
         GroupByOnesIMP(PI,IMPG);
         //EPI.clear();
         PI.clear();
         //Store PIs
     }
+    cout << "PIs: " << endl;
+    SSetPrint(PIs);
+    cout << "EPIs: " << endl;
+    SSetPrint(EPI);
     
 }
 bool PoSValidation(vector<string>& maxterms, set<char>& var) //checks if the number of variables in a PoS in less than 11(+2 " ","+")
@@ -430,41 +435,42 @@ void PoStoBinaryString2(vector<string>& maxterms, set<char>& var)
 void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<char>& var)
 {
     cout << "POSBS" << endl;
-    string BinaryT;
-    set<char>::iterator IT;
 
     for (int i = 0; i < maxterms.size(); i++)
     {
-        for (IT = var.begin(); IT != var.end(); IT++)
+        string BinaryT;
+
+        for (char ch : var)
         {
-            if (maxterms[i].find(*IT) != maxterms[i].npos)
+            if (maxterms[i].find(ch) != string::npos)
             {
-                if (maxterms[i].find(*IT) == maxterms[i].length() - 1)
+                if (maxterms[i].find(ch) == maxterms[i].length() - 1)
                 {
-                    BinaryT.append("0");  // Change "1" to "0" for PoS
+                    BinaryT += "0";  // Change "1" to "0" for PoS
                 }
                 else
                 {
-                    if (maxterms[i][maxterms[i].find(*IT) + 1] == '\'')
+                    if (maxterms[i][maxterms[i].find(ch) + 1] == '\'')
                     {
-                        BinaryT.append("1");
+                        BinaryT += "1";
                     }
                     else
                     {
-                        BinaryT.append("0");  // Change "1" to "0" for PoS
+                        BinaryT += "0";  // Change "1" to "0" for PoS
                     }
                 }
             }
             else
             {
-                BinaryT.append("1");  // Change "-" to "1" for PoS
+                BinaryT += "1";  // Change "-" to "1" for PoS
             }
         }
+
         Bmaxterms.push_back(BinaryT);
         cout << BinaryT << endl;
-        BinaryT.clear();
     }
 }
+
 void GroupByOnes(vector<string>&CmintermsB, map<int, vector<string>>&IMPG)
 {
     for (int i = 0; i < CmintermsB.size(); i++)
@@ -824,7 +830,10 @@ int main()
     // Things left: Pos not working, Turn cannocial sop to numbers. Save prime implicants, show minterms covered by them. Turn EPIS into booleans.
     //string PoST = "(a + b)(b + c)(c + d)";
     //PoSCleanUp(PoST);
-    string SopT = "abc + bcd + ac'e";
+    //string SopT = "abc + bcd + ac'e";
+    //string SopT = "ac + ba + aab + ccc";
+    //string SopT = "a";
+    string SopT = "a + b' + c";
     cout << SoPValidation1(SopT) << endl;
     SoPCleanUp(SopT);
 }
