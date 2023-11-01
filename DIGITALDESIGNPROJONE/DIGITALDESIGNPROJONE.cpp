@@ -950,6 +950,51 @@ int main()
                 {
                     cout << "Failed Bracket validation" << endl;
                 }
+                SopT = "(a' + b' + c')(b' + c' + d')(a' + c + e')";
+                if (SoPValidation1(SopT) != 0)
+                {
+                    SoPCleanUp(SopT);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }
+                SopT = "(a + c)(b + a)(a + a + b)(c + c + c)";
+                if (SoPValidation1(SopT) != 0)
+                {
+                    SoPCleanUp(SopT);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }
+                SopT = "(a)";
+                if (SoPValidation1(SopT) != 0)
+                {
+                    SoPCleanUp(SopT);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }
+                SopT = "(a + b' + c)";
+                if (SoPValidation1(SopT) != 0)
+                {
+                    SoPCleanUp(SopT);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }
+                SopT = "((a + b') + c";
+                if (SoPValidation1(SopT) != 0)
+                {
+                    SoPCleanUp(SopT);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }
                 //string SopT = "abc + bcd + ac'e";
                 //SopT = "ac + ba + aab + ccc";
                 //SopT = "a";
