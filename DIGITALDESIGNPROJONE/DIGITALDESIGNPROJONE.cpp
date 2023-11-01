@@ -596,55 +596,35 @@ void FTTColFillSOP (vector<vector<bool>>&TTable, vector<string>& Bminterms)
         }
     }
 }
-void FTTColFillPOS (vector<vector<bool>>&TTable, vector<string>& Bmaxterms)
-{
-    //cout << "FFTCOLFILL";
-    for (int i = 0; i < Bmaxterms.size(); i++)
-    {
-        for (int j = 0; j < TTable.size(); j++)
-        {
+void FTTColFillPOS(vector<vector<bool>>& TTable, vector<string>& Bmaxterms) {
+    for (int i = 0; i < Bmaxterms.size(); i++) {
+        for (int j = 0; j < TTable.size(); j++) {
             int countBM = 0;
-            for (int k = 0; k < TTable[j].size()-1; k++)
-            {
-                //cout << "CountBM: " << countBM << " i: " << i << " BMIN: " << Bminterms[i][countBM] << " TTABLE: " << TTable[j][k] << " j: " << j << endl;
-                if (countBM< Bmaxterms[i].size())
-                {
-                    if (Bmaxterms[i][countBM] == '-')
-                    {
+            for (int k = 0; k < TTable[j].size() - 1; k++) {
+                if (countBM < Bmaxterms[i].size()) {
+                    if (Bmaxterms[i][countBM] == '-') {
                         countBM++;
-                        if (countBM == Bmaxterms[i].size())
-                        {
-                            //cout << "CountBM: " << countBM << " i: " << i << " TTABLE: " << TTable[j][TTable[j].size() - 1] << " j: " << j << endl;
+                        if (countBM == Bmaxterms[i].size()) {
+                            TTable[j][TTable[j].size() - 1] = 0;
                         }
-                    }
-                    else
-                    {
-                        if (bool(Bmaxterms[i][countBM]-'0') == TTable[j][k])
-                        {
-                            countBM++;
-                            if (countBM == Bmaxterms[i].size())
-                            {
-                                //cout << "CountBM: " << countBM << " i: " << i << " TTABLE: " << TTable[j][TTable[j].size() - 1] << " j: " << j << endl;
-                            }
-
-                        }
-                        else
-                        {
+                    } else {
+                        if (bool(Bmaxterms[i][countBM] - '0') != TTable[j][k]) {
                             countBM = 0;
-                            TTable[j][TTable[j].size() - 1] = 1;
                             k = TTable[j].size();
                         }
+                        countBM++;
+                        if (countBM == Bmaxterms[i].size()) {
+                            TTable[j][TTable[j].size() - 1] = 0;
+                        }
                     }
-                }
-                else
-                {
-
-                    //cout << "CountBM: " << countBM << " i: " << i << " TTABLE: " << TTable[j][TTable[j].size() - 1] << " j: " << j << endl;
+                } else {
+                    TTable[j][TTable[j].size() - 1] = 0;
                 }
             }
         }
     }
 }
+
 void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableForVariables
 {
     vector<vector<bool>>TTable(pow(2,var.size()),vector<bool>(var.size()+1,0));
