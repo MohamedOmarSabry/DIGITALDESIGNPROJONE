@@ -35,8 +35,39 @@ void SSetPrint(unordered_set<string>S) //orints a 1 d char set
     unordered_set<string>::iterator IT;
     for (IT = S.begin(); IT != S.end(); IT++)
     {
-        cout << *IT << endl;
+        cout << *IT << " ";
     }
+    cout << endl;
+}
+void SSetPrint2(unordered_set<string>S, set<char>& var) //orints a 1 d char set
+{
+    unordered_set<string>::iterator IT;
+    set<char>::iterator IT2;
+    for (IT = S.begin(); IT != S.end(); IT++)
+    {
+        IT2 = var.begin();
+        string temp = *IT;
+        string temp2 = "";
+        for (int j = 0; j < IT->size(); j++)
+        {
+            if (temp[j] == '0')
+            {
+                temp2.push_back(*IT2);
+                temp2.append("'");
+            }
+            else if (temp[j] == '1')
+            {
+                temp2.push_back(*IT2);
+            }
+            IT2++;
+        }
+        cout << temp2 << " ";
+        if (IT != --S.end())
+        {
+            cout << "+ ";
+        }
+    }
+    cout << endl;
 }
 void CSetPrint(set<char>S) //orints a 1 d char set
 {
@@ -87,7 +118,7 @@ void GroupByOnesIMP(unordered_set<string> implicants, map<int, vector<string>>& 
     }
     //OnesMapPrint(IMPG);
 }
-void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
+void ImplicantGroupComparison(map<int, vector<string>>& IMPG, set<char>& var)
 {
     map<int, vector<string>>::iterator IT1;
     map<int, vector<string>>::iterator IT2;
@@ -176,10 +207,15 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
         PI.clear();
         //Store PIs
     }
-    cout << "PIs: " << endl;
+    cout << "Binary PIs: " << endl;
     SSetPrint(PIs);
-    cout << "EPIs: " << endl;
+    cout << "Boolean PIs: " << endl;
+    SSetPrint2(PIs,var);
+    cout << "Binary EPIs: " << endl;
     SSetPrint(EPI);
+    cout << "Boolean EPIs: " << endl;
+    SSetPrint2(EPI,var);
+
     
 }
 bool PoSValidation(vector<string>& maxterms, set<char>& var) //checks if the number of variables in a PoS in less than 11(+2 " ","+")
@@ -194,6 +230,10 @@ bool PoSValidation(vector<string>& maxterms, set<char>& var) //checks if the num
 
             }
             else if (maxterms[i][j] == '+')
+            {
+
+            }
+            else if (maxterms[i][j] == ' ')
             {
 
             }
@@ -226,6 +266,10 @@ bool SoPValidation2(vector<string>& minterms,set<char>& var) //validates number 
             if (minterms[i][j]=='\'')
             {
                 //cout << "Apostrophe detected" << endl;
+            }
+            else if (minterms[i][j]<'a'|| minterms[i][j] > 'z')
+            {
+                //cout << "Unacceptable variable" << endl;
             }
             else
             {
@@ -436,6 +480,7 @@ void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<
                 BinaryT.append("-");
             }
         }
+        cout << BinaryT << endl;
         Bmaxterms.push_back(BinaryT);
         BinaryT.clear();
     }
@@ -675,7 +720,7 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
     //SVectorPrint(CMintermsB);
     map<int, vector<string>>IMPG;
     GroupByOnes(CMintermsB, IMPG);
-    ImplicantGroupComparison(IMPG);
+    ImplicantGroupComparison(IMPG, var);
 
 }
 void TTableBuild2(set<char>& var, vector<string>& Bmaxterms) //createsTruthTableForVariables
@@ -711,7 +756,7 @@ void TTableBuild2(set<char>& var, vector<string>& Bmaxterms) //createsTruthTable
     }
     cout << "F ";
     cout << endl;
-    FTTColFillPOS(TTable, Bmaxterms);
+    FTTColFillSOP(TTable, Bmaxterms);
     for (int i = 0; i < TTable.size(); i++)
     {
         //cout << *IT << "\t";
@@ -728,7 +773,7 @@ void TTableBuild2(set<char>& var, vector<string>& Bmaxterms) //createsTruthTable
     //SVectorPrint(CMintermsB);
     map<int, vector<string>>IMPG;
     GroupByOnes(CMaxtermsB, IMPG);
-    ImplicantGroupComparison(IMPG);
+    ImplicantGroupComparison(IMPG, var);
 
 }
 void PoSCleanUp(string PoS) //Removes the brackets from the PoS string and puts the terms in a vector
@@ -841,11 +886,20 @@ int main()
     // Things left: Pos not working, Turn cannocial sop to numbers. Save prime implicants, show minterms covered by them. Turn EPIS into booleans.
     //string PoST = "(a + b)(b + c)(c + d)";
     //PoSCleanUp(PoST);
+     /*string SopT = "abc + bcd + ac'e";
+                if (SoPValidation1(SopT) != 0)
+                {
+                    SoPCleanUp(SopT);
+                }
+                else
+                {
+                    cout << "Failed Bracket validation" << endl;
+                }*/
     for (int i = 0; i < 1;)
     {
         cout << "1. Run test cases" << endl;
-        cout << "2. Insert PoS" << endl;
-        cout << "3. Insert SoP" << endl;
+        cout << "2. Insert SoP" << endl;
+        cout << "3. Insert PoS" << endl;
         cout << "4. END" << endl;
         int x;
         cin>>x;
@@ -899,50 +953,16 @@ int main()
                     cout << "Failed Bracket validation" << endl;
                 }
                 SopT = "(a' + b' + c')(b' + c' + d')(a' + c + e')";
-                if (SoPValidation1(SopT) != 0)
-                {
-                    SoPCleanUp(SopT);
-                }
-                else
-                {
-                    cout << "Failed Bracket validation" << endl;
-                }
+                    PoSCleanUp(SopT);
                 SopT = "(a + c)(b + a)(a + a + b)(c + c + c)";
-                if (SoPValidation1(SopT) != 0)
-                {
-                    SoPCleanUp(SopT);
-                }
-                else
-                {
-                    cout << "Failed Bracket validation" << endl;
-                }
+                    PoSCleanUp(SopT);
                 SopT = "(a)";
-                if (SoPValidation1(SopT) != 0)
-                {
-                    SoPCleanUp(SopT);
-                }
-                else
-                {
-                    cout << "Failed Bracket validation" << endl;
-                }
+                    PoSCleanUp(SopT);
                 SopT = "(a + b' + c)";
-                if (SoPValidation1(SopT) != 0)
-                {
-                    SoPCleanUp(SopT);
-                }
-                else
-                {
-                    cout << "Failed Bracket validation" << endl;
-                }
+                    PoSCleanUp(SopT);
                 SopT = "((a + b') + c";
-                if (SoPValidation1(SopT) != 0)
-                {
-                    SoPCleanUp(SopT);
-                }
-                else
-                {
-                    cout << "Failed Bracket validation" << endl;
-                }
+                    PoSCleanUp(SopT);
+
                 //string SopT = "abc + bcd + ac'e";
                 //SopT = "ac + ba + aab + ccc";
                 //SopT = "a";
@@ -953,7 +973,8 @@ int main()
             case 2:
             {
                 string y = "";
-                cin >> y;
+                cin.ignore();
+                getline(cin, y);
                 if (SoPValidation1(y) != 0)
                 {
                     SoPCleanUp(y);
@@ -967,7 +988,8 @@ int main()
             case 3:
             {
                 string y = "";
-                cin >> y;
+                cin.ignore();
+                getline(cin, y);
                 PoSCleanUp(y);
                 break;
             }
