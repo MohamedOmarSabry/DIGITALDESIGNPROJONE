@@ -1,7 +1,7 @@
 # DIGITALDESIGNPROJONE
-A program that does the following:
+## A program that does the following:
 -Takes input as POS or SOP.
--Does validation on the format. "abc+ad'c" or "(a+b+c)(c+d+e')". SoPValidation1()
+-Does validation on the format. "abc + ad'c" or "(a + b + c)(c + d + e')". SoPValidation1()
 -Takes any variables (Doesn't need to be from the alphabet).
 -Validates that the number of variables is not more than 10 --> SoPValidation2() and PoSValidation().
 -Takes the input string and divides it into parts using the SoPCleanUp() or PoSCleanUp() functions and stores it in vectors.
