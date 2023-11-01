@@ -377,102 +377,70 @@ void PrintCanonicalForms(vector<string>& Bminterms, vector<string>& Bmaxterms, s
         }
     }
 }
-void PoStoBinaryString2(vector<string>& maxterms, set<char>& var)
-{
-    //cout << "POSBS" << endl;
+void PoStoBinaryString2(vector<string>& maxterms, set<char>& var) {
     string BinaryT;
-    vector<string>Bmaxterms;
-    set<int>Cannoncial;
+    vector<string> Bmaxterms;
+    set<int> Canonical;
     set<char>::iterator IT;
 
-    for (int i = 0; i < maxterms.size(); i++)
-    {
-        for (IT = var.begin(); IT != var.end(); IT++)
-        {
-            if (maxterms[i].find(*IT) != maxterms[i].npos)
-            {
-                if (maxterms[i].find(*IT) == maxterms[i].length() - 1)
-                {
-                    BinaryT.append("0");  // Change "1" to "0" for PoS
-                }
-                else
-                {
-                    if (maxterms[i][maxterms[i].find(*IT) + 1] == '\'')
-                    {
+    for (int i = 0; i < maxterms.size(); i++) {
+        for (IT = var.begin(); IT != var.end(); IT++) {
+            if (maxterms[i].find(*IT) != maxterms[i].npos) {
+                if (maxterms[i].find(*IT) == maxterms[i].length() - 1) {
+                    BinaryT.append("0");
+                } else {
+                    if (maxterms[i][maxterms[i].find(*IT) + 1] == '\'') {
                         BinaryT.append("1");
-                    }
-                    else
-                    {
-                        BinaryT.append("0");  // Change "1" to "0" for PoS
+                    } else {
+                        BinaryT.append("0");
                     }
                 }
-            }
-            else
-            {
-                BinaryT.append("1");  // Change "-" to "1" for PoS
+            } else {
+                BinaryT.append("-");
             }
         }
         Bmaxterms.push_back(BinaryT);
-        //cout << BinaryT << endl;
         BinaryT.clear();
     }
-    for (int i = 0; i < Bmaxterms.size(); i++)
-    {
+
+    for (int i = 0; i < Bmaxterms.size(); i++) {
         int count = 0;
-        for (int j = 0; j < Bmaxterms[i].size(); j++)
-        {
-            if (Bmaxterms[i][j] == '0')
-            {
-
-            }
-            else
-            {
-                count = count + pow(2, Bmaxterms[i].size() - j - 1);
+        for (int j = 0; j < Bmaxterms[i].size(); j++) {
+            if (Bmaxterms[i][j] == '1') {
+                count += pow(2, Bmaxterms[i].size() - j - 1);
             }
         }
-        Cannoncial.emplace(count);
+        Canonical.emplace(count);
     }
-    cout << "Cannonical POS: " << endl;
-    ISetPrint(Cannoncial);
+
+    cout << "Canonical POS: " << endl;
+    ISetPrint(Canonical);
 }
-void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<char>& var)
-{
-    //cout << "POSBS" << endl;
 
-    for (int i = 0; i < maxterms.size(); i++)
-    {
-        string BinaryT;
-
-        for (char ch : var)
-        {
-            if (maxterms[i].find(ch) != string::npos)
-            {
-                if (maxterms[i].find(ch) == maxterms[i].length() - 1)
-                {
-                    BinaryT += "0";  // Change "1" to "0" for PoS
-                }
-                else
-                {
-                    if (maxterms[i][maxterms[i].find(ch) + 1] == '\'')
-                    {
-                        BinaryT += "1";
-                    }
-                    else
-                    {
-                        BinaryT += "0";  // Change "1" to "0" for PoS
+void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<char>& var) {
+    string BinaryT;
+    set<char>::iterator IT;
+    for (int i = 0; i < maxterms.size(); i++) {
+        for (IT = var.begin(); IT != var.end(); IT++) {
+            if (maxterms[i].find(*IT) != maxterms[i].npos) {
+                if (maxterms[i].find(*IT) == maxterms[i].length() - 1) {
+                    BinaryT.append("0");
+                } else {
+                    if (maxterms[i][maxterms[i].find(*IT) + 1] == '\'') {
+                        BinaryT.append("1");
+                    } else {
+                        BinaryT.append("0");
                     }
                 }
-            }
-            else
-            {
-                BinaryT += "1";  // Change "-" to "1" for PoS
+            } else {
+                BinaryT.append("-");
             }
         }
-
         Bmaxterms.push_back(BinaryT);
-        //cout << BinaryT << endl;
+        BinaryT.clear();
     }
 }
+
 
 void GroupByOnes(vector<string>&CmintermsB, map<int, vector<string>>&IMPG)
 {
