@@ -815,9 +815,7 @@ bool SoPValidation1(string SoP) //checks if SoP has a PoS
         return true;
     }
 }
-
-int main()
-{
+int main() {
     //flow: 
     //SoP: SoPVal1 --> SoPCleanUp --> SoPVal2 ?
     //PoS: PoSCleanUp --> PoSValidation ?
@@ -841,106 +839,75 @@ int main()
     // Things left: Pos not working, Turn cannocial sop to numbers. Save prime implicants, show minterms covered by them. Turn EPIS into booleans.
     //string PoST = "(a + b)(b + c)(c + d)";
     //PoSCleanUp(PoST);
-    for (int i = 0; i < 1;)
-    {
-        cout << "1. Run test cases" << endl;
-        cout << "2. Insert PoS" << endl;
-        cout << "3. Insert SoP" << endl;
-        cout << "4. END" << endl;
-        int x;
-        cin>>x;
-        switch(x)
-        {
-            case 1:
-            {
+    //for (int i = 0; i < 1;) {
+
+    cout << "1. Run test cases" << endl;
+    cout << "2. Insert PoS" << endl;
+    cout << "3. Insert SoP" << endl;
+    cout << "4. END" << endl;
+    int x;
+    cin >> x;
+    while (x != 4) {
+        switch (x) {
+            case 1: {
                 string SopT = "abc + bcd + ac'e";
-                if (SoPValidation1(SopT) != 0)
-                {
+                if (SoPValidation1(SopT) != 0) {
                     SoPCleanUp(SopT);
-                }
-                else
-                {
+                } else {
                     cout << "Failed Bracket validation" << endl;
                 }
                 SopT = "ac + ba + aab + ccc";
-                if (SoPValidation1(SopT) != 0)
-                {
+                if (SoPValidation1(SopT) != 0) {
                     SoPCleanUp(SopT);
-                }
-                else
-                {
+                } else {
                     cout << "Failed Bracket validation" << endl;
                 }
                 SopT = "a";
-                if (SoPValidation1(SopT) != 0)
-                {
+                if (SoPValidation1(SopT) != 0) {
                     SoPCleanUp(SopT);
-                }
-                else
-                {
+                } else {
                     cout << "Failed Bracket validation" << endl;
                 }
                 SopT = "a + b' + c";
-                if (SoPValidation1(SopT) != 0)
-                {
+                if (SoPValidation1(SopT) != 0) {
                     SoPCleanUp(SopT);
-                }
-                else
-                {
+                } else {
                     cout << "Failed Bracket validation" << endl;
                 }
                 SopT = "(a + b') + c";
-                if (SoPValidation1(SopT) != 0)
-                {
+                if (SoPValidation1(SopT) != 0) {
                     SoPCleanUp(SopT);
-                }
-                else
-                {
+                } else {
                     cout << "Failed Bracket validation" << endl;
                 }
                 SopT = "(a' + b' + c')(b' + c' + d')(a' + c + e')";
-                if (SoPValidation1(SopT) != 0)
-                {
-                    SoPCleanUp(SopT);
-                }
-                else
-                {
+                if (SoPValidation1(SopT) == 0) {
+                    PoSCleanUp(SopT);
+                } else {
                     cout << "Failed Bracket validation" << endl;
                 }
                 SopT = "(a + c)(b + a)(a + a + b)(c + c + c)";
-                if (SoPValidation1(SopT) != 0)
-                {
-                    SoPCleanUp(SopT);
-                }
-                else
-                {
+                if (SoPValidation1(SopT) == 0) {
+                    PoSCleanUp(SopT);
+                } else {
                     cout << "Failed Bracket validation" << endl;
                 }
                 SopT = "(a)";
-                if (SoPValidation1(SopT) != 0)
-                {
-                    SoPCleanUp(SopT);
-                }
-                else
-                {
+                if (SoPValidation1(SopT) == 0) {
+                    PoSCleanUp(SopT);
+                } else {
                     cout << "Failed Bracket validation" << endl;
                 }
                 SopT = "(a + b' + c)";
-                if (SoPValidation1(SopT) != 0)
-                {
-                    SoPCleanUp(SopT);
-                }
-                else
-                {
+                if (SoPValidation1(SopT) == 0) {
+                    PoSCleanUp(SopT);
+                } else {
                     cout << "Failed Bracket validation" << endl;
                 }
                 SopT = "((a + b') + c";
-                if (SoPValidation1(SopT) != 0)
-                {
-                    SoPCleanUp(SopT);
-                }
-                else
-                {
+                if (SoPValidation1(SopT) == 0) {
+                    PoSCleanUp(SopT);
+                } else {
                     cout << "Failed Bracket validation" << endl;
                 }
                 //string SopT = "abc + bcd + ac'e";
@@ -950,39 +917,39 @@ int main()
                 //SopT = "(a + b') + c";
                 break;
             }
-            case 2:
-            {
+            case 2: {
                 string y = "";
-                cin >> y;
-                if (SoPValidation1(y) != 0)
-                {
-                    SoPCleanUp(y);
+                cin>>y;
+                if (SoPValidation1(y) == 0) {
+                    PoSCleanUp(y);
+
+                    //PoStoBinaryString(y);
+                    //TTableBuild(y);
+
+                } else {
+                    cout << "POS is not in correct format" << endl;
                 }
-                else
-                {
-                    cout << "Failed Bracket validation" << endl;
+                break;
+            }
+                case 3: {
+                    string x = "";
+                    if(0 != SoPValidation1(x))
+                    {
+                        SoPCleanUp(x);
+                    }
+                    else
+                        cout<<"SOP is not in correct format"<<endl;
+                    break;
                 }
-                break;
+                case 4: {
+                    //i = 1;
+                    break;
+                }
+                default: {
+                    cout << "please choose a valid option" << endl;
+                    break;
+                }
             }
-            case 3:
-            {
-                string y = "";
-                cin >> y;
-                PoSCleanUp(y);
-                break;
-            }
-            case 4:
-            {
-                i = 1;
-                break;
-            }
-            default:
-            {
-                break;
-            }
-                
         }
 
     }
-    
-}
