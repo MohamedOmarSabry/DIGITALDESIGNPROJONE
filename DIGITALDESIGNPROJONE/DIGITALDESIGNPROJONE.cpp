@@ -236,15 +236,15 @@ void ImplicantGroupComparisonPOS(map<int, vector<string>>& IMPS)
                 IT2 = IT1;
                 IT2++;
 
-                for (IT2; IT2 != IMPS.end(); IT2++)
+                for (; IT2 != IMPS.end(); IT2++)
                 {
                     int flag = 0;
                     bool flag2 = 0;
                     string NPI = IT1->second[i];
 
-                    for (int k = 0; k < IT2->second[j].size(); k++)
+                    for (int k = 0; k < IT2->second[i].size(); k++) // Change "j" to "i"
                     {
-                        if (IT1->second[i][k] == IT2->second[j][k])
+                        if (IT1->second[i][k] == IT2->second[i][k]) // Change "j" to "i"
                         {
                             // Logic for matching positions
                         }
@@ -254,7 +254,7 @@ void ImplicantGroupComparisonPOS(map<int, vector<string>>& IMPS)
                             {
                                 NPI[k] = '-';
                             }
-                            else if (k == IT2->second[j].size() - 1)
+                            else if (k == IT2->second[i].size() - 1) // Change "j" to "i"
                             {
                                 NPI[k] = '-';
                             }
@@ -273,7 +273,7 @@ void ImplicantGroupComparisonPOS(map<int, vector<string>>& IMPS)
                         PI.emplace(NPI);
                         PIs.emplace(NPI);
                         Found.emplace(IT1->second[i]);
-                        Found.emplace(IT2->second[j]);
+                        Found.emplace(IT2->second[i]);
                     }
                 }
 
@@ -659,7 +659,7 @@ void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var,vector<string
                 {
                     POS.append(" + ");
                 }
-                
+
             }
             POS.append(")");
             //cout << POS << endl;
@@ -861,7 +861,7 @@ void TTableBuild2(set<char>& var, vector<string>& Bmaxterms) {
 
     map<int, vector<string>> IMPG;
     GroupByZeros(CMmaxtermsB, IMPG);
-    ImplicantGroupComparison(IMPG);
+    ImplicantGroupComparisonPOS(IMPG);
 }
 
 void PoSCleanUp(string PoS) //Removes the brackets from the PoS string and puts the terms in a vector
@@ -980,7 +980,7 @@ int main() {
     cout << "4. END" << endl;
     int x;
     cin >> x;
-    while (true) {
+    //while (true) {
         switch (x) {
             case 1: {
                 string SopT = "abc + bcd + ac'e";
@@ -1088,5 +1088,5 @@ int main() {
                 }
             }
         }
-return 0;
-    }
+//return 0;
+    //}
