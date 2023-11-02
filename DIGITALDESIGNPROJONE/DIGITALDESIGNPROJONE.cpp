@@ -377,7 +377,8 @@ void PrintCanonicalForms(vector<string>& Bminterms, vector<string>& Bmaxterms, s
         }
     }
 }
-void PoStoBinaryString2(vector<string>& maxterms, set<char>& var) {
+void PoStoBinaryString2(vector<string>& maxterms, set<char>& var) //Gets Canonicl POS
+{
     string BinaryT;
     vector<string> Bmaxterms;
     set<int> Canonical;
@@ -417,7 +418,8 @@ void PoStoBinaryString2(vector<string>& maxterms, set<char>& var) {
     ISetPrint(Canonical);
 }
 
-void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<char>& var) {
+void PoStoBinaryString(vector<string>& maxterms, vector<string>& Bmaxterms, set<char>& var) //converts POS string to binary string
+{
     string BinaryT;
     set<char>::iterator IT;
     for (int i = 0; i < maxterms.size(); i++) {
@@ -937,12 +939,13 @@ int main() {
                     {
                         SoPCleanUp(x);
                     }
-                    else
-                        cout<<"SOP is not in correct format"<<endl;
+                    else {
+                        cout << "SOP is not in correct format" << endl;
+                    }
                     break;
                 }
                 case 4: {
-                    //i = 1;
+                            return 0;
                     break;
                 }
                 default: {
@@ -951,5 +954,5 @@ int main() {
                 }
             }
         }
-
+return 0;
     }
