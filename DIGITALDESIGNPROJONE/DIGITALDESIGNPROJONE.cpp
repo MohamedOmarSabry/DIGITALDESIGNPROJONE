@@ -470,6 +470,32 @@ void GroupByOnes(vector<string>&CmintermsB, map<int, vector<string>>&IMPG)
     }
     //OnesMapPrint(IMPG);
 }
+void GroupByZeros(vector<string>& PoSTerms, map<int, vector<string>>& IMPS)
+{
+    for (int i = 0; i < PoSTerms.size(); i++)
+    {
+        int count = 0;
+        for (int j = 0; j < PoSTerms[i].size(); j++)
+        {
+            if (PoSTerms[i][j] == '0')
+            {
+                count++;
+            }
+        }
+
+        if (IMPS.find(count) != IMPS.end())
+        {
+            IMPS[count].push_back(PoSTerms[i]);
+        }
+        else
+        {
+            vector<string> termGroup;
+            termGroup.push_back(PoSTerms[i]);
+            IMPS.emplace(count, termGroup);
+        }
+    }
+}
+
 void PrintMinMaxterms(vector<vector<bool>>& TTable, set<char>& var,vector<string>&Cminterms)
 {
     vector<string>SOPs;
@@ -680,59 +706,51 @@ void TTableBuild(set<char>& var, vector<string>& Bminterms) //createsTruthTableF
     ImplicantGroupComparison(IMPG);
 
 }
-void TTableBuild2(set<char>& var, vector<string>& Bmaxterms) //createsTruthTableForVariables
-{
-    vector<vector<bool>>TTable(pow(2, var.size()), vector<bool>(var.size() + 1, 0));
+void TTableBuild2(set<char>& var, vector<string>& Bmaxterms) {
+    vector<vector<bool>> TTable(pow(2, var.size()), vector<bool>(var.size() + 1, 0));
     set<char>::iterator IT;
     IT = var.begin();
-    for (int i = 0; i < var.size(); i++)
-    {
-        //cout << "i: " << i << endl;
+
+    for (int i = 0; i < var.size(); i++) {
         int count = 0;
-        for (int j = 0; j < pow(2, i); j++)
-        {
-            //cout << "Row: " << j << " ";
-            //cout << "j: " << j << endl;
-            for (int k = 0; k < pow(2, var.size() - i - 1); k++)
-            {
+        for (int j = 0; j < pow(2, i); j++) {
+            for (int k = 0; k < pow(2, var.size() - i - 1); k++) {
                 count++;
             }
-            //cout << "count: " << count<< endl;
-            for (int k = count; k < count + pow(2, var.size() - i - 1); k++)
-            {
-                //cout << "k: " << k << " i: " << i << endl;
+            for (int k = count; k < count + pow(2, var.size() - i - 1); k++) {
                 TTable[k][i] = 1;
             }
             count = count + pow(2, var.size() - i - 1);
         }
-        //IT++;
     }
-    for (IT; IT != var.end(); IT++)
-    {
+
+    for (IT; IT != var.end(); IT++) {
         cout << *IT << " ";
     }
     cout << "F ";
     cout << endl;
+
     FTTColFillPOS(TTable, Bmaxterms);
-    for (int i = 0; i < TTable.size(); i++)
-    {
-        //cout << *IT << "\t";
-        for (int j = 0; j < TTable[i].size(); j++)
-        {
+
+    for (int i = 0; i < TTable.size(); i++) {
+        for (int j = 0; j < TTable[i].size(); j++) {
             cout << TTable[i][j] << " ";
         }
         cout << endl;
     }
-    vector<string>CMaxterms;
-    vector<string>CMaxtermsB;
-    PrintMinMaxterms(TTable, var, CMaxterms);
-    SoPtoBinaryString(CMaxterms, CMaxtermsB, var);
-    //SVectorPrint(CMintermsB);
-    map<int, vector<string>>IMPG;
-    GroupByOnes(CMaxtermsB, IMPG);
-    ImplicantGroupComparison(IMPG);
 
+    vector<string> CMmaxterms;
+    vector<string> CMmaxtermsB;
+    PrintMinMaxterms(TTable, var, CMmaxterms);
+
+    PoStoBinaryString(CMmaxterms, CMmaxtermsB, var);
+    //SVectorPrint(CMmaxtermsB);
+
+    map<int, vector<string>> IMPG;
+    GroupByZeros(CMmaxtermsB, IMPG);
+    ImplicantGroupComparison(IMPG);
 }
+
 void PoSCleanUp(string PoS) //Removes the brackets from the PoS string and puts the terms in a vector
 {
     vector<string> maxterms;
