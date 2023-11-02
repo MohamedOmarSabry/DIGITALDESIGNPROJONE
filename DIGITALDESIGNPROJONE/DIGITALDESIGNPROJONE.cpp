@@ -849,7 +849,7 @@ int main() {
     cout << "4. END" << endl;
     int x;
     cin >> x;
-    while (x != 4) {
+    while (true) {
         switch (x) {
             case 1: {
                 string SopT = "abc + bcd + ac'e";
@@ -921,6 +921,7 @@ int main() {
             }
             case 2: {
                 string y = "";
+                cout<<"Please input POS"<<endl;
                 cin>>y;
                 if (SoPValidation1(y) == 0) {
                     PoSCleanUp(y);
@@ -935,6 +936,8 @@ int main() {
             }
                 case 3: {
                     string x = "";
+                    cout<<"Please input SOP"<<endl;
+                    cin>>x;
                     if(0 != SoPValidation1(x))
                     {
                         SoPCleanUp(x);
