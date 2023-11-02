@@ -87,6 +87,42 @@ void GroupByOnesIMP(unordered_set<string> implicants, map<int, vector<string>>& 
     }
     //OnesMapPrint(IMPG);
 }
+void GroupByZerosIMP(unordered_set<string> posTerms, map<int, vector<string>>& IMPS)
+{
+    unordered_set<string>::iterator IT;
+    string T = "";
+
+    for (IT = posTerms.begin(); IT != posTerms.end(); IT++)
+    {
+        int count = 0;
+
+        for (int j = 0; j < IT->size(); j++)
+        {
+            T = *IT;
+
+            if (T[j] == '0')
+            {
+                count++;
+            }
+            else if (T[j] == '-')
+            {
+                count++; // You can adjust the count based on your expression's logic
+            }
+        }
+
+        if (IMPS.find(count) != IMPS.end())
+        {
+            IMPS.find(count)->second.push_back(*IT);
+        }
+        else
+        {
+            vector<string> EMP;
+            EMP.push_back(*IT);
+            IMPS.emplace(count, EMP);
+        }
+    }
+}
+
 void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
 {
     map<int, vector<string>>::iterator IT1;
@@ -182,6 +218,83 @@ void ImplicantGroupComparison(map<int, vector<string>>& IMPG)
     SSetPrint(EPI);
     
 }
+void ImplicantGroupComparisonPOS(map<int, vector<string>>& IMPS)
+{
+    map<int, vector<string>>::iterator IT1;
+    map<int, vector<string>>::iterator IT2;
+    unordered_set<string> EPI;
+    unordered_set<string> PI;
+    unordered_set<string> PIs;
+    unordered_set<string> Found;
+
+    while (IMPS.size() != 0)
+    {
+        for (IT1 = IMPS.begin(); IT1 != IMPS.end(); IT1++)
+        {
+            for (int i = 0; i < IT1->second.size(); i++)
+            {
+                IT2 = IT1;
+                IT2++;
+
+                for (IT2; IT2 != IMPS.end(); IT2++)
+                {
+                    int flag = 0;
+                    bool flag2 = 0;
+                    string NPI = IT1->second[i];
+
+                    for (int k = 0; k < IT2->second[j].size(); k++)
+                    {
+                        if (IT1->second[i][k] == IT2->second[j][k])
+                        {
+                            // Logic for matching positions
+                        }
+                        else
+                        {
+                            if (flag != 1)
+                            {
+                                NPI[k] = '-';
+                            }
+                            else if (k == IT2->second[j].size() - 1)
+                            {
+                                NPI[k] = '-';
+                            }
+
+                            flag++;
+                        }
+                    }
+
+                    if (flag == 1)
+                    {
+                        flag2 = 1;
+                    }
+
+                    if (flag2 != 0)
+                    {
+                        PI.emplace(NPI);
+                        PIs.emplace(NPI);
+                        Found.emplace(IT1->second[i]);
+                        Found.emplace(IT2->second[j]);
+                    }
+                }
+
+                if (Found.find(IT1->second[i]) == Found.end())
+                {
+                    EPI.emplace(IT1->second[i]);
+                }
+            }
+        }
+
+        IMPS.clear();
+        GroupByZerosIMP(PI, IMPS);
+        PI.clear();
+    }
+
+    cout << "PIs: " << endl;
+    SSetPrint(PIs);
+    cout << "EPIs: " << endl;
+    SSetPrint(EPI);
+}
+
 bool PoSValidation(vector<string>& maxterms, set<char>& var) //checks if the number of variables in a PoS in less than 11(+2 " ","+")
 {
     set<char> varss;
