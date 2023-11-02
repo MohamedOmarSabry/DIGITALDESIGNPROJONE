@@ -952,7 +952,7 @@ int main() {
                     break;
                 }
                 default: {
-                    cout << "please choose a valid option" << endl;
+                    cout << "Please choose a valid option" << endl;
                     break;
                 }
             }
