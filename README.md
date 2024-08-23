@@ -11,3 +11,6 @@ Run the C++ file called `DIGITALDESIGNPROJONE`.
 - Builds a correct truth table for the boolean expressions provided.
 - Prints the canonical min and max terms in their boolean form.
 - Prints the prime implicants correctly, but not the essential prime implicants due to a faulty understanding of the project requirements that would have needed code redesigns that were not possible with the allotted time.
+## Authors
+- **Mohammed Omar Sabry** - _GitHub Profile_: [MohamedOmarSabry](https://github.com/MohamedOmarSabry) | _Email_: momo12320@aucegypt.edu
+- **Hamza Abu Heiba** - _GitHub Profile_: [Abouheiba](https://github.com/Abouheiba) | _Email_: abouheiba@aucegypt.edu
